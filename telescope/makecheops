@@ -1,0 +1,4 @@
+LIB_TARGET1 = telescope
+LIB_OBJECT1 = FocalPlaneGenerator.o PSFGenerator.o GlobalThroughputGenerator.o HaloGenerator.o
+CXX_CFLAGS += -I../
+COMPONENT_LIBS += -L../data/lib/ -ldata -L../source/lib/ -lsource 

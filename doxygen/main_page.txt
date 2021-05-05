@@ -1,0 +1,20 @@
+/**
+ @mainpage 
+
+ <b>Release Version: __trunk__</b>
+
+The CHEOPS simulation software (CHEOPSim) can be used to provide a time 
+series of simulated images to represent the data which will be received from 
+CHEOPS, including detailed simulation of the field of view, effects which vary 
+as a function of the satellite orbit, the telescope optics and the CCD response.
+ 
+ Please find here the [source code documentation] 
+ (https://redmine.isdc.unige.ch/projects/cheops/wiki#Documentation) 
+ of other SOC CHEOPS software packages. 
+ 
+ 
+ Please contact the CHEOPS SOC helpdesk <cheops-soc-help@unige.ch>
+ if you find any bug or problem in the software or if you
+ would like to have a new feature to be implemented. 
+ **/
+ 

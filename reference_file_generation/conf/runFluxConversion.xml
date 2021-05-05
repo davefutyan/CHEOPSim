@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_params xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="program_params_schema.xsd">
+
+<param>
+	<name>validityStart</name>
+	<value>2020-01-29 00:00:00</value>
+	<help>Validity start date for the REF_APP_FluxConversion file (YYYY-MM-DD HH:MM:SS[.SSS])</help>
+</param>
+
+<param>
+	<name>throughputFilename</name>
+	<value>CH_TU2018-01-01T00-00-00_REF_APP_Throughput-BeginOfLife_V0100.fits</value>
+	<help>filename for telescope throughput vs wavelength, format: REF_APP_Throughput.fsd</help>
+</param>
+
+<param>
+	<name>QEFilename</name>
+	<value>CH_TU2020-01-29T00-00-00_REF_APP_QE_V0101.fits</value>
+	<help>filename for quantum efficiency vs wavelength, format: REF_APP_QE.fsd</help>
+</param>
+
+<param>
+	<name>SEDFilename</name>
+	<value>CH_TU2015-01-01T00-00-00_REF_APP_SEDTeff_V0101.fits</value>
+	<help>filename for SED reference file, format: REF_APP_SEDTeff.fsd. Any string not containing REF_APP_SEDTeff will result in a black body being used instead.</help>
+</param>
+
+<param>
+	<name>gaiaBand</name>
+	<value>true</value>
+	<type>bool</type>
+	<help>Flag to indicate whether to use the Gaia band or the V-band as the reference passband</help>
+</param>
+
+<param>
+	<name>blackBodyOffset</name>
+	<value>-0.004795</value>
+	<type>double</type>
+	<help>Empirically derived offset correction for (CHEOPS mag - Gaia mag) for TEff>7200K, when black body spectra are used to model the stellar spectra</help>
+</param>
+
+<param>
+	<name>fitIntercept</name>
+	<value>0.94604</value>
+	<type>double</type>
+	<help>Intercept of linear fit to (observed flux / predicted flux) vs effective temperature</help>
+</param>
+
+<param>
+	<name>fitSlope</name>
+	<value>-2.0074e-06</value>
+	<type>double</type>
+	<help>Slope of linear fit to (observed flux / predicted flux) vs effective temperature</help>
+</param>
+
+</program_params>

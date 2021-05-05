@@ -1,0 +1,10 @@
+CXX_UNIT_TESTS += TestDetector
+CXX_UNIT_TESTS += TestDetector2
+
+PYTHON_COVERAGE += detector
+
+UNIT_TESTS_VERSION = 5.0
+
+INCLUDES += -I../../../
+COMPONENT_LIBS += -L${CHEOPS_SW}/lib/ -ldata -ldetector -lsource -ltelescope
+EXT_LIBS += -lgsl -lgslcblas

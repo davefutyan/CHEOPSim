@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_params xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="program_params_schema.xsd">
+
+<param>
+	<name>referenceFileType</name>
+	<value>REF_APP_WhiteCCDLocationPSF</value>
+    <help>Reference file type, e.g. REF_APP_WhitePSF</help>
+</param>
+
+<param>
+	<name>inputFilename</name>
+<!--	<value>/Users/futyand/CHEOPS/cheops_svn_v6/CHEOPSim/reference_file_generation/resources/QE_Apr_2020/QE_data.txt</value> -->
+<!--	<value>/Users/futyand/CHEOPS/cheops_svn_v6/CHEOPSim/reference_file_generation/resources/throughput_Apr_2017/BoL_EoL_ot_10042017_330mm.dat</value> -->
+<!--	<value>/Users/futyand/CHEOPS/cheops_svn_v6/CHEOPSim/reference_file_generation/resources/InFlightPSFs/unsmoothed/CH_PR300039_TG000102_TU2020-02-21T05-53-04_SCI_RAW_SubArray_V0100_median.fits</value> -->
+        <!-- <value>/Users/futyand/CHEOPS/InFlightPSFs/Jun2020/CH_PR310066_TG000201_TU2020-06-26T16-37-05_SCI_RAW_SubArray_V0100_median.fits</value> -->
+	<value>/Users/futyand/CHEOPS/cheops_svn_v6/CHEOPSim/reference_file_generation/resources/InFlightPSFs/unsmoothed</value>
+    <help>Full path to input file or, for the case of REF_APP_WhiteCCDLocationPSF, input directory</help>
+</param>
+
+<param>
+	<name>validityStart</name>
+	<value>2020-04-18T06:30:00</value>
+    <help>Validity start date for the output file (YYYY-MM-DDTHH:MM:SS[.SSS])</help>
+</param>
+
+<param>
+	<name>validityStop</name>
+	<value>2050-01-01T00:00:00</value>
+    <help>Validity end date for the output file (YYYY-MM-DDTHH:MM:SS[.SSS])</help>
+</param>
+
+<param>
+    <name>provider</name>
+    <value>Instrument Team: Attila Simon</value>
+    <help></help>
+</param>
+
+<param>
+    <name>description</name>
+    <value>Added new window location (163, 742)</value>
+    <help></help>
+</param>
+
+<param>
+    <name>ccdTemperature</name>
+    <value>233</value>
+    <type>double</type>
+    <help>Applicable to REF_APP_QE: CCD temperature in Kelvin corresponding to the QE measurement</help>
+</param>
+
+<param>
+    <name>endOfLife</name>
+    <value>false</value>
+    <type>bool</type>
+    <help>Applicable to REF_APP_Throughput: Set to true to use optical throughput at end of life rather than at beginning of life</help>
+</param>
+
+<param>
+    <name>singleTemperaturePSF</name>
+    <value>true</value>
+    <type>bool</type>
+    <help>Applicable to REF_APP_[Oversampled][White|Coloured]PSF: Set to true if the PSF is provided for a single temperature rather than for four thermal cases</help>
+</param>
+
+<param>
+    <name>psfTemperature</name>
+    <value>-10.0</value>
+    <type>double</type>
+    <help>Applicable to REF_APP_[Oversampled][White|Coloured]PSF: Temperature corresponding to the PSF</help>
+</param>
+
+<param>
+    <name>oversampledPsf</name>
+    <value>false</value>
+    <type>bool</type>
+    <help>Applicable to REF_APP_[Oversampled][White|Coloured]PSF: Flag to indicate whether or not the input PSF is spatially oversampled</help>
+</param>
+
+<param>
+    <name>ltan</name>
+    <value>"6am"</value>
+    <help>Applicable to REF_APP_StrayLight: Local Time of Ascending Node of satellite orbit used for stray light file: 6am or 6pm</help>
+</param>
+
+<param>
+    <name>altitude</name>
+    <value>650.</value>
+    <type>double</type>
+    <help>Applicable to REF_APP_StrayLight: Altitude of satellite orbit in km used for stray light file</help>
+</param>
+
+<param>
+    <name>Applicable to REF_APP_StrayLight: pointingRA</name>
+    <value>1.639911</value>
+    <type>double</type>
+    <help>RA of pointing direction for stray light file in radians</help>
+</param>
+
+<param>
+    <name>Applicable to REF_APP_StrayLight: pointingDec</name>
+    <value>-0.182212</value>
+    <type>double</type>
+    <help>Declination of pointing direction for stray light file in radians</help>
+</param>
+
+<param>
+    <name>Applicable to REF_APP_Jitter: jitterOffset</name>
+    <value>5605.</value>
+    <type>double</type>
+    <help>Omit the first jitterOffset seconds from the jitter file</help>
+</param>
+    
+</program_params>

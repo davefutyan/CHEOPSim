@@ -1,0 +1,19 @@
+#Taken from http://www.stsci.edu/hst/wfc3/documents/handbooks/currentIHB/c09_exposuretime08.html Table 9.4
+#Rows are heliocentric Ecliptic longitude (degrees)
+#Columns are Ecliptic latitude (degrees)
+#Units are V-mag per arcsec^2
+#Zero values correspond to solar avoidance zone
+0	15	30	45	60	75	90
+0	0.	0.	0.	0.	22.6	23.0	23.3
+15	0.	0.	0.	0.	22.6	23.1	23.3
+30	0.	0.	0.	22.3	22.7	23.1	23.3
+45	0.	0.	22.1	22.5	22.9	23.1	23.3
+60	21.3	21.9	22.4	22.7	23.0	23.2	23.3
+75	21.7	22.2	22.6	22.9	23.1	23.2	23.3
+90	22.0	22.3	22.7	23.0	23.2	23.3	23.3
+105	22.2	22.5	22.9	23.1	23.3	23.3	23.3
+120	22.4	22.6	22.9	23.2	23.3	23.3	23.3
+135	22.4	22.6	22.9	23.2	23.3	23.4	23.3
+150	22.4	22.6	22.9	23.1	23.3	23.4	23.3
+165	22.3	22.5	22.8	23.0	23.2	23.4	23.3
+180	22.1	22.4	22.7	23.0	23.2	23.4 23.3

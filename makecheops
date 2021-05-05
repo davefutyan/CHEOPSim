@@ -1,0 +1,11 @@
+SUBDIRS += data
+SUBDIRS += source
+SUBDIRS += satellite
+SUBDIRS += telescope
+SUBDIRS += detector
+SUBDIRS += simulator
+SUBDIRS += plotting
+SUBDIRS += reference_file_generation
+INSTALL_RESOURCES = $(notdir $(wildcard ./resources/*))
+
+RELEASE_VERSION = r_13.6

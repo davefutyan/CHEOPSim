@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_params xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="program_params_schema.xsd">
+
+<param>
+	<name>MPSFilename</name>
+	<value>null</value>
+	<help>Filename for MPS Visit information, format: MPS_PRE_Visits.fsd</help>
+</param>
+
+<param>
+	<name>startTime</name>
+	<value>2018-09-01 12:00:00</value>
+	<help>Start date and time of the simulation (YYYY-MM-DD HH:MM:SS[.SSS])</help>
+</param>
+
+<param>
+	<name>numberOfStackedImages</name>
+	<value>1</value>
+	<type>int</type>
+	<help>Number of stacked images to produce.  Simulation duration is numberOfStackedImages*exposuresPerStack*exposureTime.</help>
+	<min>1</min>
+</param>
+
+<param>
+	<name>exposuresPerStack</name>
+	<value>1</value>
+	<type>int</type>
+	<help>Number of exposures per stack</help>
+	<min>1</min>
+	<max>60</max>
+</param>
+
+<param>
+	<name>exposureTime</name>
+	<value>10.</value>
+	<type>double</type>
+	<help>Exposure time in seconds</help>
+	<min>0.</min>
+	<max>600.</max>
+</param>
+
+<param>
+	<name>repetitionPeriod</name>
+	<value>0</value>
+	<type>double</type>
+	<help>Repetition period in seconds</help>
+	<min>0.</min>
+	<max>600.</max>
+</param>
+
+<param>
+	<name>maxImagesPerCube</name>
+	<value>2000</value>
+	<type>int</type>
+	<help>Maximum number of images per image cube</help>
+	<min>1</min>
+</param>
+
+<param>
+	<name>doFullFrame</name>
+	<value>false</value>
+	<type>bool</type>
+	<help>Set to true to output a fits file containing a full frame image corresponding to the first exposure of the simulation</help>
+</param>
+
+<param>
+	<name>pointingRA</name>
+	<value>00:00:00.0</value>
+	<help>Pointing direction Right Ascension in arcseconds</help>
+</param>
+
+<param>
+	<name>pointingDec</name>
+	<value>00:00:00.0</value>
+	<help>Pointing direction declination in arcseconds</help>
+</param>
+
+<param>
+	<name>obsId</name>
+	<value>-1</value>
+	<type>int</type>
+	<help>Observation ID</help>
+</param>
+
+<param>
+	<name>applyThroughput</name>
+	<value>false</value>
+	<type>bool</type>
+	<help>Switch off to set the optical throughput to 100% for the full wavelength range</help>
+</param>
+
+<param>
+	<name>throughputFilename</name>
+	<value>CH_TU2018-01-01T00-00-00_REF_APP_Throughput-BeginOfLife_V0101.fits</value>
+	<help>filename for telescope throughput vs wavelength, format: REF_APP_Throughput.fsd</help>
+</param>
+
+<param>
+	<name>applyQE</name>
+	<value>false</value>
+	<type>bool</type>
+	<help>Switch off to apply the flat field only without wavelength dependent quantum efficiency</help>
+</param>
+
+<param>
+	<name>QEFilename</name>
+	<value>CH_TU2020-01-29T00-00-00_REF_APP_QE_V0102.fits</value>
+	<help>filename for quantum efficiency vs wavelength, format: REF_APP_QE.fsd</help>
+</param>
+
+<param>
+	<name>SEDFilename</name>
+	<value>CH_TU2015-01-01T00-00-00_REF_APP_SEDTeff_V0102.fits</value>
+	<help>filename for SED reference file, format: REF_APP_SEDTeff.fsd. Any string not containing REF_APP_SEDTeff will result in a black body being used instead.</help>
+</param>
+
+<param>
+	<name>targetSEDFilename</name>
+	<value></value>
+	<help>filename for user provided SED fileto be used for the target star. Format: FITS table containing columns named WAVELENGHTH and FLUX. Units of WAVELENGTH must be Angstroms and the wavelength range must cover 3300-11000 Angstroms.</help>
+</param>
+
+<param>
+	<name>gainCorrectionFilename</name>
+	<value>CH_TU2020-02-18T06-15-13_REF_APP_GainCorrection_V0109.fits</value>
+	<help>Filename for the REF_APP_GainCorrection fits file containing the parameters for the gain correction formula as a function of bias voltage values</help>
+</param>
+
+<param>
+	<name>radius_barycentre</name>
+	<value>35.</value>
+	<type>double</type>
+	<help>Radius of circle centred on image centre used to determine PSF barycentre</help>
+</param>
+
+<param>
+	<name>radius_bkgInner</name>
+	<value>40.</value>
+	<type>double</type>
+	<help>Inner radius of annulus centred on PSF barycentre used to evaluate the background</help>
+</param>
+
+<param>
+	<name>radius_bkgOuter</name>
+	<value>60.</value>
+	<type>double</type>
+	<help>Outer radius of annulus centred on PSF barycentre used to evaluate the background</help>
+</param>
+
+<param>
+	<name>radius_psf</name>
+	<value>33.</value>
+	<type>double</type>
+	<help>Radius of circle centred on PSF barycentre used to extract the signal flux</help>
+</param>
+
+<param>
+	<name>subtractBackground</name>
+	<value>true</value>
+	<type>bool</type>
+	<help>Set to true to perform background subtraction during light curve extraction</help>
+</param>
+
+<param>
+	<name>updateDatabase</name>
+	<value>false</value>
+	<type>bool</type>
+	<help>Set to true to update the CHEOPSim job submission database</help>
+</param>
+
+<param>
+	<name>databaseServer</name>
+	<value>local</value>
+	<help>Name of server for CHEOPSim job submission database</help>
+</param>
+
+<param>
+	<name>modulesToRun</name>
+	<value>StarProducer,FocalPlaneGenerator,PSFGenerator,GlobalThroughputGenerator,FullWellSimulator</value>
+	<help>Comma separated list of modules to be run</help>
+</param>
+
+<param>
+	<name>programType</name>
+	<value>90</value>
+	<type>int</type>
+	<help>Program Type</help>
+</param>
+
+<param>
+	<name>piName</name>
+	<value>CHEOPSim</value>
+	<help>Name of Principal Investigator</help>
+</param>
+
+<param>
+	<name>piUid</name>
+	<value>0</value>
+	<type>int</type>
+	<help>User ID of Principal Investigator</help>
+</param>
+
+<param>
+	<name>redundantHardware</name>
+	<value>false</value>
+	<type>bool</type>
+	<help>Flag to indicate whether or not to use the redundant right amplifier rather than left amplifier for CCD readout</help>
+</param>
+
+<param>
+	<name>strayLightThreshold</name>
+	<value>1.E9</value>
+	<type>double</type>
+	<help>Stray light threshold for writing out images in photons/s/pixel, to apply when not defined in MPS_PRE_Visits</help>
+</param>
+
+<module>
+  <name>StarProducer</name>
+
+  	<param>
+        <name>FOVradius</name>
+        <value>551</value>
+	    <type>double</type>
+        <help>Field of view radius in arcseconds</help>
+    </param>
+    
+    <param>
+        <name>minMagnitude</name>
+        <value>19</value>
+	    <type>double</type>
+        <help>Minimum magnitude for stars in the field of view</help>
+    </param>
+    
+    <param>
+        <name>targetMagnitude</name>
+        <value></value>
+        <help>Magnitude of target star in passband defined by gaiaBand parameter. If empty, the value is taken from the first row in starFilename, converting ot the appropriate passband as necessary.</help>
+    </param>
+    
+    <param>
+        <name>starFilename</name>
+        <value>mystars.txt</value>
+        <help>ascii file containing comma separated values for RA,dec,mag,specType for each star to be included</help>
+    </param>
+    
+	<param>
+		<name>gaiaBand</name>
+		<value>true</value>
+		<type>bool</type>
+		<help>Flag to indicate whether or not to use the Gaia band rather than the V-band for stellar flux normalization</help>
+	</param>
+    
+    <param>
+        <name>useTargetStarForPointing</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Flag to indicate whether or not to match the pointing direction to the target star</help>
+    </param>
+    
+    <param>
+        <name>doBackgroundStars</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Switch on to add a background star field</help>
+    </param>
+    
+    <param>
+        <name>fieldCrowding</name>
+        <value>medium</value>
+        <help>Background star field crowding (low, medium or extreme)</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>FocalPlaneGenerator</name>
+
+    <param>
+        <name>subArrayXDim</name>
+        <value>200</value>
+	    <type>int</type>
+        <help>Number of pixels in X dimension of image sub-array</help>
+    </param>
+    
+    <param>
+        <name>subArrayYDim</name>
+        <value>200</value>
+	    <type>int</type>
+        <help>Number of pixels in Y dimension of image sub-array</help>
+    </param>
+    
+    <param>
+        <name>subArrayXOffset</name>
+        <value>412</value>
+	    <type>int</type>
+        <help>Offset of first pixel of image sub-array in X dimension w.r.t. CCD edge</help>
+    </param>
+    
+    <param>
+        <name>subArrayYOffset</name>
+        <value>412</value>
+	    <type>int</type>
+        <help>Offset of first pixel of image sub-array in Y dimension w.r.t. CCD edge</help>
+    </param>
+    
+    <param>
+        <name>targetLocationX</name>
+        <value>512.0</value>
+	    <type>double</type>
+        <help>Location of centre of FOV rotation in X dimension w.r.t. CCD edge</help>
+    </param>
+    
+    <param>
+        <name>targetLocationY</name>
+        <value>512.0</value>
+	    <type>double</type>
+        <help>Location of centre of FOV rotation in Y dimension w.r.t. CCD edge</help>
+    </param>
+    
+    <param>
+        <name>targetLocationListX</name>
+        <value>null</value>
+        <help>Comma separated list of target location x coordinates, with one entry per exposure, intended for MandC data</help>
+    </param>
+    
+    <param>
+        <name>targetLocationListY</name>
+        <value>null</value>
+        <help>Comma separated list of target location y coordinates, with one entry per exposure, intended for MandC data</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>PSFGenerator</name>
+
+    <param>
+        <name>PSF_filename</name>
+        <value>CH_TU2020-04-18T06-30-00_REF_APP_WhitePSF_V0107.fits</value>
+        <help>Filename for fits file used to define the PSF, format: REF_APP_(Oversampled)(White|Coloured)PSF.fsd with meatadata REF_APP_(Oversampled)(White|Coloured)PSFMetadata.fsd</help>
+    </param>
+    
+    <param>
+        <name>monochromaticPSF</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Set to true to use a monochromatic (wavelength binned) PSF</help>
+    </param>
+    
+    <param>
+        <name>monochromaticPSFwavelength</name>
+        <value>0</value>
+	    <type>int</type>
+        <help>Wavelength for monochromatic PSF. Set to 0 for combination over all wavelengths.</help>
+    </param>
+    
+    <param>
+        <name>thermalMap</name>
+        <value>fixed</value>
+        <help>Specify the termal map for the PSF: fixed, cold, hot1, hot2 or breathing</help>
+    </param>
+    
+    <param>
+        <name>oversampleJitter</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to perform time oversampling of PSF position according to jitter and field of view rotation</help>
+    </param>
+    
+    <param>
+        <name>targetStarPositioning</name>
+        <value>SnapToGrid</value>
+        <help>Method for positioning the target star PSF onto the pixel grid: Oversampling, Interpolation, or SnapToGrid</help>
+    </param>
+    
+    <param>
+        <name>backgroundStarPositioning</name>
+        <value>Interpolation</value>
+        <help>Method for positioning background star PSFs onto the pixel grid: Oversampling, Interpolation, or SnapToGrid</help>
+    </param>
+    
+    <param>
+        <name>convertFluxToPhotons</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Switch off to perform a closure test that the input flux is recovered in the extracted light curve</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>FullWellSimulator</name>
+
+    <param>
+        <name>fullWellCapacity</name>
+        <value>125000</value>
+	    <type>int</type>
+        <help>Maximum number of electrons that can be held in a pixel</help>
+    </param>
+    
+</module>
+
+</program_params>

@@ -1,0 +1,11 @@
+EXEC_TARGET1 = runCHEOPSim
+EXEC_OBJECT1 = Photometry.o ExampleModule.o ModuleRegistry.o ImageWriter.o DataReduction.o IdealLightCurveGenerator.o HKWriter.o EXT_APP_ObservationRequests_schema.o Simulator.o runCHEOPSim.o
+CXX_CFLAGS += -I../
+COMPONENT_LIBS += -L../data/lib/ -ldata -L../source/lib/ -lsource -L../satellite/lib/ -lsatellite -L../telescope/lib/ -ltelescope -L../detector/lib/ -ldetector
+EXT_LIBS += -lpqxx -lpq
+EXEC_VERSION1 = 0.1
+
+src/EXT_APP_ObservationRequests_schema.cxx : ${CHEOPS_SW}/resources/EXT_APP_ObservationRequests_schema.xsd
+	xsd cxx-tree --output-dir src $< 
+	mv src/EXT_APP_ObservationRequests_schema.hxx include
+	

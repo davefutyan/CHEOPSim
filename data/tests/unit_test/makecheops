@@ -1,0 +1,8 @@
+CXX_UNIT_TESTS += TestData
+
+PYTHON_COVERAGE += data
+
+UNIT_TESTS_VERSION = 5.0
+
+INCLUDES += -I../../../
+COMPONENT_LIBS += -L${CHEOPS_SW}/lib/ -ldata -lsource -lsatellite -ltelescope

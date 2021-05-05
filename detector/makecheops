@@ -1,0 +1,5 @@
+LIB_TARGET1 = detector
+LIB_OBJECT1 = FrameTransferSmearer.o PhotonNoiseGenerator.o FlatFieldGenerator.o DarkCurrentGenerator.o CosmicRayGenerator.o ChargeTransferSimulator.o FullWellSimulator.o BiasGenerator.o
+CXX_CFLAGS += -I../
+COMPONENT_LIBS += -L../data/lib/ -ldata
+EXT_LIBS += -lgsl -lgslcblas

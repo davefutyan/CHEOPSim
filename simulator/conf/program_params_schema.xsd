@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+
+<xs:element name="program_params" type="program_params_type" />
+
+<xs:complexType name="program_params_type">
+  <xs:sequence>
+	<xs:element name="param"  type="param_type"  minOccurs="0" maxOccurs="unbounded"/>
+	<xs:element name="module" type="module_type" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>	
+
+
+<xs:complexType name="module_type">
+  <xs:sequence>
+	<xs:element name="name"   type="name_type"/>
+	<xs:element name="param"  type="param_type"   minOccurs="0" maxOccurs="unbounded"/>
+	<xs:element name="module" type="module_type"  minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>	
+
+<xs:complexType name="param_type">
+  <xs:sequence>
+	<xs:element name="name"       type="name_type"/>
+        <xs:element name="short_name" type="short_name_type" minOccurs="0"/>
+	<xs:element name="value"      type="xs:string"       minOccurs="0"/>
+	<xs:element name="type"       type="value_data_type" minOccurs="0" default="string"/>
+	<xs:element name="help"       type="xs:string"       minOccurs="0"/>
+	<xs:element name="min"        type="xs:string"       minOccurs="0"/>
+	<xs:element name="max"        type="xs:string"       minOccurs="0"/>
+  </xs:sequence>
+</xs:complexType>	
+
+<xs:simpleType  name="name_type">
+    <xs:restriction base="xs:string">
+	  <xs:minLength value="1"/>
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType  name="short_name_type">
+	<xs:restriction base="xs:string">
+		<xs:minLength value="1"/>
+		<xs:maxLength value="1"/>
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="value_data_type">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="string" />
+		<xs:enumeration value="int"    />
+		<xs:enumeration value="double" />
+		<xs:enumeration value="bool"   />
+	</xs:restriction>
+</xs:simpleType>
+
+</xs:schema>

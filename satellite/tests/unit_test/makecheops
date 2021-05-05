@@ -1,0 +1,9 @@
+CXX_UNIT_TESTS += TestSatellite
+CXX_UNIT_TESTS += TestSatellite2
+
+PYTHON_COVERAGE += satellite
+
+UNIT_TESTS_VERSION = 5.0
+
+INCLUDES += -I../../../
+COMPONENT_LIBS += -L${CHEOPS_SW}/lib/ -ldata -lsatellite -lsource

@@ -1,0 +1,4 @@
+LIB_TARGET1 = source
+LIB_OBJECT1 = FluxConverter.o StarProducer.o StellarNoiseFluxModulator.o StellarVariationFluxModulator.o TransitFluxModulator.o TransitModel.o UserFluxModifier.o ZodiacalLightGenerator.o StrayLightGenerator.o
+CXX_CFLAGS += -I../
+COMPONENT_LIBS += -L../data/lib/ -ldata

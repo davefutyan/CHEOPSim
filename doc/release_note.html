@@ -1,0 +1,1445 @@
+<html>
+<head>
+<title>CHEOPS release</title>
+</head>
+<body>
+
+<h1><center>
+<p style="margin-top:50px;">
+CHEOPS<br />
+Science Operations Centre<br />
+</p>
+<p>
+Software Release Note: CHEOPSim
+</p>
+</center></h1>
+
+<b>Version:</b> __trunk__</br>
+
+<b>Date: </b>release date
+
+<BR>&nbsp;<BR>
+In case of questions please contact the 
+<a href="mailto:cheops-soc-help@unige.ch"> CHEOPS SOC help desk</a> 
+<BR>&nbsp;<BR>
+
+
+<a href="https://svn.isdc.unige.ch/svn-cheops/06_cheopsim/software/CHEOPSim/tags/r_13.6" target="_blank"> 
+Software download</a>
+<BR>&nbsp;<BR>
+
+<a href="https://svn.isdc.unige.ch/svn-cheops/06_cheopsim/software/CHEOPSim/tags/r_13.6/doc/manual_cxx/index.html" target="_blank"> 
+Developer manual</a>
+<BR>&nbsp;<BR>
+
+<a href="https://redmine.isdc.unige.ch/projects/cheops/wiki/Quick_start#Development-environment" target="_blank"> 
+Installation instructions</a>
+<BR>&nbsp;<BR>
+
+<h3> Changes </h3>
+
+<h4>Release 13.6</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/22254" target="_blank">Change #22254</a>: Header keywords in input and output fits files now store Gaia magnitudes rather tha V-band magnitudes, and the magnitude column in the table of the StarCatalogue input and output files now stores Gaia magnitude rather than CHEOPS magnitude. Change compatible with common_sw r_13.0 and later.
+  <li><a href="https://redmine.isdc.unige.ch/issues/22254" target="_blank">Change #22254</a>: Interpret star magnitudes input from an ascii file, and the magnitude threshold, as Gaia magnitudes rather than V-band magnitudes; unit tests updated accordingly, since a star with GMag=m has lower flux than a star with Vmag=m
+  <li>Add a unit test to TestTelescope.cxx to check that the ETC calculation of the flux as F0_X*10^(-0.4*Cmag) is consistent with the CHEOPSim flux calculation. Current difference of 0.8% is not understood; unit test difference threshold is set to 1%.
+  <li><a href="https://redmine.isdc.unige.ch/issues/22254" target="_blank">Change #22254</a>: Define magnitude in calculateTimeToSaturation (for look up table for web interface saturation prediction) as Gaia rather than V-band magnitude 
+  <li>Print CHEOPS magnitude as well as Gaia and V-magnitudes to the log file
+  <li>Use better variable naming in StarProducer.cxx to reflect reference band (V-band or Gaia-band)
+  <li>Write content to new table columns in SCI_RAW_ImageMetaData: LOS_TO_EARTH_ANGLE, LATITUDE, LONGITUDE
+  <li><a href="https://redmine.isdc.unige.ch/issues/22841" target="_blank">Issue #22841</a>: Assign new header keyword T_EFF in all relevant SCI_RAW_* files. In the case of SCI_RAW_Hk*, this change is commented for now except for SCI_RAW_HkCe until common_sw r_13.1.5 or later is released (requires update to Hk2RawProcessing).
+  <li><a href="https://redmine.isdc.unige.ch/issues/22841" target="_blank">Issue #22841</a>: Assign new header keyword T_EFF and set keywords for MAG_CHPS, MAG_CERR and MAG_GERR in SCI_COR_LightCurve and SIM_ANA_NoiseCurve files
+  <li><a href="https://redmine.isdc.unige.ch/issues/22841" target="_blank">Issue #22841</a>: Assign new header keywords T_EFF, PITL and GAIN keywords in output StarCatalogue files
+  <li>Set PROVIDER, DESCRIP and GAIN_RF keywords in relevant fits output
+  <li>Related to Change <a href="https://redmine.isdc.unige.ch/issues/22254" target="_blank">#23299</a>: adapt to change to REF_APP_BiasFrame, in which the bias frames for main and redundant readout channels are now in the same file rather than two separate ones. Also now read the new REF_APP_BiasOffset extension in the bias frame file to determine the scaling factor which should be applied to the bias frame according to RO frequancy, RO channel and CCD temperature, in order to scale the mean bias offset from the on ground measurement to the in flight observed values. Previously the scaling factors were hardcoded for 100kHz and 230kHz, valid only for CCD temperature -45C and main RO channel. 
+  <li>Update all input reference files to latest versions in default configuration file and where hardcoded. For all except REF_APP_WhitePSF/REF_APP_WhiteCCDLocationPSF, REF_APP_QE, REF_APPFlatFieldTeff, EXT_APP_SAAMap and REF_APP_BiasFrame this is purely technical, as the only changes are the addition of PROVIDER and DESCRIP header keywords / updated header keyword groupings; REF_APP_WhitePSF is updated from V0102 (on ground calibration PSF) to V0107 (in flight PSF at window location (163, 742)); REF_APP_BiasFrame is updated to a new format with main and redundant hardware frames in a single file; REF_APP_QE is updated from the on ground to the in flight measurement, with REF_APP_FlatFieldTeff updated accordingly; EXT_APP_SAAMap is updated from Spenvis model to map derived from IOC data. Note that in CHEOPSim_web, REF_APP_WhitePSF/REF_APP_WhiteCCDLocationPSF, REF_APP_QE, REF_APPFlatFieldTeff and EXT_APP_SAAMap were already updated to the in flight versions.
+  <li>Only require the "_rebin" suffix in the PSF filename for non-oversampled versions of synthetic PSFs
+</ul>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>For consistency with ETC flux calculation, define Gaia magnitude of Vega to be 0 rather than 0.035, and update unit tests accordingly, also updating TestTelescope.xml to use gaiaBand=true in the StarProducer configuration
+  <li>Delete undeleted pointer in ImageWriter.cxx
+</ul>
+
+<h4>Release 13.5</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li>Scale REF_APP_BiasFrame reference file to correspond to inflight measurements of bias offset (627.6 ADU for 100kHz, 565.8 for 230kHz)
+  <li>Add implementation for generating REF_APP_WhitePSF_V0107 and REF_APP_WhiteCCDLocationPSF_V0103 with PSF location at (263,842) 
+  <li>Support setting new TEMP_CCD keyword in REF_APP_QE
+</ul>
+
+<h4>Release 13.4.1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Fix bug which was resulting in a failure to read the moon data if the start time of the simulation is within the first 5 minutes of the calendar year.
+</ul>
+
+<h4>Release 13.4</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li>Apply the correction described in https://redmine.isdc.unige.ch/projects/cheops/wiki/Flux_Conversion to account for the empirical discrepancy between observed and predicted fluxes in GlobalThoughputGenerator
+  <li>Support PSF input files of type REF_APP_WhiteCCDLocationPSF, assigning the PSF shape according to the target location on the CCD
+</ul>
+
+<h4>Release 13.3</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Only calculate the moon and sun angle in OrbitSimulator if no MPS_PRE_VisitsConstraints is provided, otherwise take the information from the provided file.
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>New directory reference_file_generation at the top level of the CHEOPSim package to allow straightforward reproduction of reference files used in production data processing. The InputConverter CHEOPSim module has been replaced with a new class ReferenceFileConverter in reference_file_generation, and a new executable runReferenceFileConversion is provided, generated using reference_file_generation/src/runReferenceFileConversion.cxx and configured using reference_file_generation/conf/runReferenceFileConversion.xml. The input files and associated documentation for the generation of the reference files used in production are provided in reference_file_generation/resources. A further directory reference_file_generation/python provides python scripts used to process the input data and evaluate input parameters required for the generation of the REF_APP_QE and REF_APP_FluxConversion reference files, and to generate the reference file itself for REF_APP_FlatFieldTeff.
+  <li>Separate out code for generating REF_APP_FluxConversion into a separate executable runFluxConversion, implemented in the new reference_file_generation sub-package. New class FluxConverter, providing the cheopsMinusRefBandMagnitude method, which was previously a method of the StarProducer class (original name cheopsMinusVbandMagnitude). The parameters of the linear fit to observe/prodicted flux vs TEff are data members of this class. In order to do this factorization cleanly, the interfaces to several CHEOPSim classes have been modified with improved design and with renaming of methods and variables to avoid confusion between the use of the Gaia band and the V-band as the reference passband for normalizing the stellar flux. The gaiaBand parameter is now a parameter of the StarProducer module rather than top level parameter. The value of this parameter is passed as an argument to the WavelengthDependence::getIntegratedRefBandTransmission method rather than assigning it as a data member of the class via the constructor.
+  <li>
+</ul>
+
+<h4>Release 13.2</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li>Updates to calculation of the contentes of REF_APP_FluxConversion as detailed in https://redmine.isdc.unige.ch/projects/cheops/wiki/Flux_Conversion: decrease CHEOPS_mag-Gaia_mag by 0.002085 for Teff>7200K in order to ensure a smooth transition between the use of SEDs and the use of black bodies to model the stellar spectra, and apply a linear correction as a function of Teff for the empirically observed flux deficit. Multiply F0_X header keyword by scale factor to account for empirical flux deficit at the effective temperature of Vega.
+</ul>
+
+<h4>Release 13.1.1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Fix bug in assignment of Vband, CHEOPS and Gaia magnitiudes introduced in r_13.1
+  <li>Fix bug so that for the case of a user provided target SED, that SED is used only for the target
+  <li>Fix paths for user orbit file and  Gaia passband file
+</ul>
+
+<h4>Release 13.1</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li>New parameter targetMagnitude to allow a user specified target magnitude in either the V-band or the Gaia band (according to the gaiaBand parameter) to override what is derived from the target CHEOPS magnitude read from the StarCaltalogue file
+</ul>
+
+<h4>Release 13.0</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Fix bug in calculation of deifference between CHEOPS magnitude and V-band magnitude (affects content of REF_APP_FluxConversion): QE was being mistakenly applied in calculation of FV (incident photon flux of the star in the V band) and F0V (incident photon flux of Vega in the V band).The effect is very small however, since QE is cloise to 1 in the V-band, and only the ratio FV/F0V is relevant, so the effect largely cancels. It is important however for the new Gaia band option.
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Support user provided SED file
+  <li>Support Gaia passband as alternative to V-band for stellar flux normalization
+  <li>Use real Vega spectrum rather than black body in calculating the difference between CHEOPS magnitude and V-band magnitide, and hence the contents of REF_APP_FluxConversion
+</ul>
+
+<h4>Release 12.3.3</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li>Update telescope effective area to reflect new understanding of effective telescope aperture radius (32cm->30cm)
+</ul>
+
+<h4>Release 12.3.2</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Replace SC_ROLL_ANGLE with 360-SC_ROLL_ANGLE in SCI_RAW_Attitude for consistency with real data (In real data, the roll angle is defined looking down onto the CCD rather than up towards the target)
+</ul>
+
+<h4>Release 12.3.1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Doxygen and unit test fixes
+</ul>
+
+<h4>Release 12.3</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/20051" target="_blank">Issue #20051</a>: Use REF_APP_SEDTeff instead of black body to define the stellar spectrum for effective temperatures up to 7200K using new methods WavelengthDependence::readSEDs and WavelengthDependence::getStellarEnergySpectrum_1nm. Affects  - integrated incident stellar photon flux, global throughput, conversion between V-band magnitude and CHEOPS magnitude (REF_APP_FluxConversion has been udpated accordingly, including effect of new ESA QE file), flat field weighting (REF_APP_FlatFieldTeff has been updated accordingly, including effect of new ESA QE file), monochromatic PSF weighting.
+  <li><a href="https://redmine.isdc.unige.ch/issues/18562" target="_blank">Issue #18562</a> Weight by square of pixel value in calculating centroid, for consistency with IntensityWeightedCenterOfGravity2D calculation in IFSW. Imagettes are now identical for direct CHEOPSim output as for CHEOPSim->Science_DFS->DFS->Preprocessing
+</ul>
+
+<h4>Release 12.2.2</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Make definition of imagette offsets consistent with IFSW
+</ul>
+
+<h4>Release 12.2.1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Update REF_APP_GainCorrection for redundant channel from V0101 to V0102 (updates GAIN_NOM header keyword from 0.5111 to 0.5071 ADU/e-)
+  <li>Fix a minor bug in determining which row to read from jitter file which can cause inconisistenies between datasets with the same start time and repetition period but different exposure times.
+</ul>
+
+<h4>Release 12.2</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Fix bug that was causing an inconsistency in the number of pre-subarray timesteps if StrayLightGenerator and OrbitSimulator are called but JitterProducer is not
+  <li>Fix bug that was causing FlatFieldGenerator module to fail when applyFlatField is set to false
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Update periodicity of stray light files from 97.5 minutes to 98.5 minutes for consistency with the default orbit file from INTA (period 98.7 minutes). Similarly update the periodicity for DPU temperature and telescope temperature in HK data.
+</ul>
+  
+<h4>Release 12.1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>The positions of manually defined hot and telegraphic pixels were not being correctly assigned in the REF_APP_BadPixels output file - now fixed
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Set pixel value in REF_APP_BadPixels output file to 2 (saturated) for manually defined bad pixels with (dark rate * exposure time) > 2^16/(nominal gain) 
+  <li>Set pixel value in REF_APP_BadPixels output file to -2 (completely dead) when deadPixelRelativeQE in FlatFieldGenerator is zero or negative
+</ul>
+
+<h4>Release 12.0</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/19251" target="_blank">Operational Anomaly #19251</a>: Fix bug that was resulting in NULL values for first row of SCI_RAW_HkExtended
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/19328" target="_blank">Issue #19328</a>: Always fill STRAY_LIGHT column of MPS_PRE_VisitConstraints, not just when there is an input MPS_PRE_VisitConstraints file (requested by data reduction)
+  <li>Read Margin mode from input MPS_PRE_Visits if provided, overriding configuration xml file
+</ul>
+
+<h4>Release 11.3</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Fix timestamps in SCI_RAW_UnstackedImageMetadata for non-integer exposure times
+  <li>Write an extra row in HK data so that the last entry is the first HK point after the end of the visit rather than the last HK point before the end of the visit. This is required to avoid error messages that the visit is not covered, and to ensure that the SDS counter for the last HK entry takes into account all CEs that have been discarded.
+</ul>
+
+<h4>Release 11.2</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li>Add new parameters targetLocationListX and targetLocationListY to support the use of a different target location for each exposure of the visit, as required for Dark M&C data
+  <li>Add new parameters sdsCounterOffset and ceCounterOffset, intended for Dark Frame M&C data, for which the CE and SDS counters increment through consecutive visits
+</ul>
+
+<h4>Release 11.1</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/18773" target="_blank">Action Item #18773</a>: use total collapsed for blank columns in reduced mode, rather than omitting entirely
+</ul>
+
+<h4>Release 11.0</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Defect #18603: swap row collapsed and col collapsed values for MrgProc keyword
+  <li>Fix CE counter for initial full frame (should always be 1)
+  <li>Extend raw HKData and averaged HKData vectors to 20s (averaged HK Cadence) after end of simulation, so that the method Data::getClosestAveragedHKData always finds the information it requires (the average is over the previous 20s - for the last image, the closest average to the image midtime may be an average over raw HK data extending beyond the end time of the simulation)
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/18695" target="_blank">Issue #18695</a>: New extension SCI_RAW_UnstackedImageMetadata for SCI_RAW_SubArray and SCI_RAW_FullArray
+  <li><a href="https://redmine.isdc.unige.ch/issues/18615" target="_blank">Issue #18615</a>: Update the BadPixelMap with new extensions for photometric pixel information
+  <li>Assign imagette stacking order according to subarray stacking order, using thresholds corresponding to the CHEOPSim_web/LUT_image_stacking.txt LUT file, instead of minimum stacking number for which the number of stacked imagettes does not exceed 14; throw runtime error if exposuresPerStack/imagetteStackingNumber is not a whole number (should not occur in this new implementation)
+  <li>Set NEXP_IMAGETTES column in MPS_PRE_Visits to 0 rather than 1 when subarray stacking order is 1 (no imagettes written)
+  <li>Remove obsolete column LosToEarthAngle in SCI_RAW_ImageMetadata
+  <li>List of bad pixels from empirical dark frame and empirical flat field are now written to the log file
+</ul>
+
+<h4>Release 10.5.3</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Defect #18513, note #2: Use closest averaged HK data (HkSource="hk tm", 20s cadence) rather than closest raw HK data (HkSource="ce", 1.2s cadence) for full frame image
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Defect #18513, note #2: Assign ADC_TEMPOH* columns in SCI_RAW_HkIfsw to correspond to therm* columns in SCI_RAW_ImageMetadata
+</ul>
+
+<h4>Release 10.5.2</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Use 20 cadence instead f raw 1.2s cadence for HK data
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Set HK_SOURCE column values to "hk tm" for stacked images, and "ce" for unstacked images and imagettes, in SCI_RAW_ImageMetadata
+  <li>Set ADC_TEMP1 and ADC_N5V columns in hkIfsw to same as in SCI_RAW_HkDefault and SCI_RAW_ImageMetadata instead of random values
+  <li>Use the same time offset for HkDefault and HkExtended because they are sent in the same packet, ensuring that these two tables have the same number of rows
+</ul>
+
+<h4>Release 10.5.1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>More optimal definition of imagette offsets, to ensure that the centroid is always located in the central pixel
+  <li>Omit _rebin suffix from PSF filename in reference_files.txt 
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Update REF_APP_HkEnumConversion reference file to V0100
+</ul>
+
+<h4>Release 10.5</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Fix bug that was causing imagette position offsets to only dynamically follow the centroid for each new stacked image rather than for each unstacked image (affects releases since r_9.4 inclusive, but does not affect datasets processed through Science_DFS->DFS->preprocessing such as DRP SV3)
+  <li>Set N_FULLFRAME_EXP and N_WINDOWFRAME_EXP appropriately in MPS_PRE_Visits output if sub-array dimensions are full frame
+  <li>Do not attempt to calculate NLC correction for very large numbers of electrons (>400k), when the polynomial has no solution
+  <li>Fix bug that could cause a crash when applying end of life CTI to top dark margin
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Support use of different REF_APP_FlatFieldTeff file to perform flat field correction in DataReduction module than the use used to apply the flat field in FlatFieldGenerator
+  <li>Update AUX_RES_ObtUtcCorrelation to V0004 (provided by MOC during SVT-3)
+  <li>Do not apply inverse non-linearity correction for overscan and blank columns which do not correspond to physical pixels (in practice only affects blank right columns when begining of life ChargeTransferSimulator is switched on)
+  <li><a href="https://redmine.isdc.unige.ch/issues/16976" target="_blank">Change #16976</a>: Fill RA_ERR, DEC_ERR, DISTANCE and T_EFF_ERR columns in EXT_PRE_StarCatalogue and EXT_DRFT_StarCatalogue outputs
+  <li><a href="https://redmine.isdc.unige.ch/issues/16374" target="_blank">Issue #16374</a>: Fill CENTROID_X and CENTROID_Y columns in SCI_RAW_LightCurve, and use intended target location rather than centroid for LOCATION_X and LOCATION_Y
+</ul>
+
+<h4>Release 10.4</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Fix bug affecting the absolute scale of the PSF flux: The integrated flux of the PSF should be the total incident flux minus the integrated flux of the halo. The halo flux to be subtracted from the incident flux was being underestimated for cases in which there is at least one background star in the sub-array, resulting in the total flux of the target star in the image (halo+PSF) being overestimated, by a constant factor of 0.24%.
+  <li>TEMP_FEE_ADC and TEMP_FEE_BIAS were switched in HK data
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/17499" target="_blank">Change #17499</a>: Instead of using the exposure duration as the time resolution for HK voltages and temperatures, use the onbboard measurement frequency of 1.2s. These 'raw' values are drawn from a Gaussian with mean and sigma as defined in the payload calibration document. The HK data output to SCI_RAW_Hk* by the HKWriter module at 20s intervals (cadence for sending HK to ground) is the mean over the previous 16 raw measurements (20/1.2 = 16.67). The HK values in the stacked image metadata correspond to the SCI_RAW_Hk* values closest in time to 10s after the stacked image mid-time. The HK values in the unstacked image metadata correspond to the raw values closest in time to the unstacked image mid-time. A new data structre SCI_RAW_HkCe is output, providing HK data with the cadence of stacked images, calculated as the mean of the HK data values in the unstacked image metadata (closest raw values) for the images making up the stack. The configurable parameter specifying the cadence for HK data has been removed. 
+</ul>
+
+<h4>Release 10.3.2</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Exclude the 100 rows/columns around the edges of the full frame when determining flat field normalization, in order to exclude the poorly illuminated corners
+  <li>Take into account that voltage rms and drift values from payload calibration document apply to voltage-VSS; fix ordering of voltage types in voltage rms and drift parameter values
+  <li>Empirical bias frame and CCD non-linearity for full frame should always correspond to 230kHz rather than 100kHz read rate (regardless of exposure duration)
+  <li>Set RD_MODE keyword to "full frame" for full frame images
+  <li>V_STRT (visit start time) keywords for SCI_RAW_Centroid should correspond to the start of first image rather than the start of the visit (first image is is delayed by 30s)
+  <li>Fix implementation of TEff offset for flat field weighting
+  <li>Read right overscan rather than left overscan for empirical bias frame in case of redundant hardware
+  <li>Fix serial read rate applying to BiasGenerator when DarkCurrentGenerator is run with includeReadoutTime set to false
+  <li>fix ObsId extension to Star catalogue filename  
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/17447" target="_blank">Change #17447</a>: New Header Keyword of CCD margins: NLIN_COR
+</ul>
+
+<h4>Release 10.3.1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Fix assignment of truth data for imagettes
+  <li>Avoid problems at visit boundaries by only writing out housekeeping data for which the time is within the visit. Remove the extra 5s that had previously been added to the start and end of the visit to account for HK data arriving a few seconds early/late since the aforementioned change prevents this; reduce length of SCI_RAW_Attitude and the set of calculated roll angles and pointing directions accordingly.
+  <li><a href="https://redmine.isdc.unige.ch/issues/17626" target="_blank">Anomaly #17626</a>: fix MRG_MODE header keyword for SCI_RAW_FullArray (value is 'image')
+  <li><a href="https://redmine.isdc.unige.ch/issues/17627" target="_blank">Anomaly #17627</a>: fix STACKING keyword for full array margins (value is 'none')
+  <li><a href="https://redmine.isdc.unige.ch/issues/17628" target="_blank">Change #17628</a>: Change ordering of information (mean,median,stdev,mad -> mean,stdev,median,mad) in reduced/total collapsed margins in CHEOPSim output to match IFSW
+  <li><a href="https://redmine.isdc.unige.ch/issues/17629" target="_blank">Anomaly #17629</a>: Fix RO frequency header keyword for full frame metadata to 230kHz
+  <li>Update name of DRP output light curve in plotting script
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Add new parameter strayLightThreshold to allow the user to define a SL threshold when SL is _not_ read from MPS_PRE_VisitConstraints.
+</ul>
+
+<h4>Release 10.3</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/16041" target="_blank">Anomaly #16041</a>: Ensure that SCI_RAW_Attitude file covers the entire visit as defined in MPS_PRE_Visits, including an extra 5 seconds at begining and end to cover HK data time offsets
+  <li>Bugfix in calculation of circular cutout for stacked images, affecting cases in which the sub-array before the cutout is not a square
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/17116" target="_blank">Change #17116</a>: Change to new/updated data structures for REF_APP_DarkFrame, REF_APP_FlatFieldTeff and REF_APP_BadPixelMap. Do not apply inverse of gain when reading dark frame (new measured dark frame is in electrons, not ADU).
+  <li>Read empirical bias frame to determine bias offset and RON values separately for each pixel, rather than generating a pure random bias frame using the same bias offset and RON for all pixels. The bias frame read depends on the readout hardware (main or redundant) as well as readout frequency (100 or 230 kHz).
+  <li>Update equation to calculate Gain correction to formula in CHEOPS-UGE-SYS-PR-019 Issue 3 Revision 0, using the gain correction reference file from the 2018 ground calibration CH_TU2018-01-01T00-00-00_REF_APP_GainCorrection_V0100.fits. Nominal voltages and nominal gain are read from the header keywords. Dependence on CCD temperature is now included in the formula, replacing the separate implementation of the direct CCD temperature dependence.
+  <li>Temperatures and voltages in HK and image metadata are now drawn randomly from a Gaussian with RMS specified in the payload calibration document CHEOPS-UGE-SYS-TR-020 Issue 1.0. For the input to the gain correction, CCD temperature and voltages do not have the Gaussian fluctuation applied, on the assumption that any real underlying fluctuations are small compared to measurement error. The voltages no longer have a dependence on FEE bias temperature, but the voltage drift as a function of time defined in the payload calibration document is applied to the voltages (it is also applied to the voltages before the Gaussian smearing for image metadata and HK data). Sinusoidal CCD and FEE bias temperature variations are now switched off by default (these temperatures are considereed constant apart from random fluctuations in image metadata and HK data due to measurement uncertainty).
+  <li>Update CCD non-linearity based on measurements from the payload calibraton campaign, using CH_TU2018-01-01T00-00-00_REF_APP_CCDLinearisationLUT100_V0300.fits. The new correction is now in terms of electrons rather than ADU, so is performed before applying the gain. It uses quadratic rather than a cubic spline. The appropriate non-linearity is selected according to the readout frequency (100 or 230 kHz), which in turn depends on the readout mode.
+  <li>Update readout mode boundaries based in Table 29 in CHEOPS-DLR-INST-MA-002 Issue 2.0
+  <li>Jitter time series starts from start of visit rather than start of first sub-array
+  <li>Read plate scale value from REF_APP_PixelScale file rather than hardcoded value 1
+  <li>Update stellar noise granulation files to new versions provided by Monical Lendl 18th July
+  <li>Housekeeping parameters ttc1AvTempAft and ttc1AvTempFrt are set based on the telescope temperature
+  <li>Default FEE temperature updated from 0C to -10C (affects HK data only)
+  <li><a href="https://redmine.isdc.unige.ch/issues/16976" target="_blank">Change #16976</a>: New header keywords for EXT_PRE_StarCatalogue and EXT_DRFT_StarCatalogue 
+  <li>Changes <a href="https://redmine.isdc.unige.ch/issues/17107" target="_blank">#17107</a> and <a href="https://redmine.isdc.unige.ch/issues/17111" target="_blank">#17111</a>: shape and RD mode header keywords are string rather than integer for image cubes
+  <li><a href="https://redmine.isdc.unige.ch/issues/17259" target="_blank">Change #17259</a>: remove V_TARG_ERR column in MPS_PRE_Visits
+  <li>set the value of new keyword NEXP_IMAGETTES column in MPS_PRE_Visits
+  <li>MRG_PROC keyword changed to "col collapsed" rather than "reduced" for reduced margin columns
+</ul>
+
+<h4>Release 10.2</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Stray light truth value corresponds to value after optical throughput rather than before
+</ul>
+
+<h5>New features</h5>
+<ul>
+  <li>Support reading of stray light thresholds from MPS_PRE_Visits, and applying those thresholds in determining whether or not to write out images. No threshold is applied if no MPS_PRE_Visits file is provided (as was the case before).
+  <li>Support reading of uploaded stray light files which do not correspond to a single orbit (but are required to be longer than the simulation duration)
+  <li>Uploaded stray light time series time=0 corresponds to start of visit instead of start of first sub-array exposure
+  <li>Uploaded incident light curve time=0 corresponds to start of visit rather than start of first sub-array; throw runtime error if length of file is shorter than visit duration
+  <li>Use Earth occultaion flag from MPS_PRE_Visits rather than value calculated from orbit to determine whether or omit images
+</ul>
+
+<h4>Release 10.1</h4>
+
+<h5>New features</h5>
+<ul>
+  <li>Support reading of stray light, Earth occultation flag and SAA flag from MPS_PRE_VisitConstraints. For case of stray light, the strayLightFile parameter should be set to the same value as MPSFilename; for the case of the SAA flag, a new parameter saaFlagFromVisitConstraints is added to OrbitSimulator
+  <li>Support reading AUX_REF_Orbit files, from a directory of multiple files
+</ul>
+
+<h4>Release 10.0</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Bugfix to setting of CE counter for inital full frame image
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Support setting of stacking method (coadd or mean) independently for the main image and for the margins
+  <li>Do not make circular cutouts for unstacked images (done by Science_DFS)
+</ul>
+
+<h4>Release 9.5.2</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Do not saturate stacked imagettes, now that the data structure is no longer restricted to 16 bits
+  <li>Set RA_TARG and DEC_TARG column values in MPS_PRE_Visits
+  <li>RO_FREQU keyword should be in Hz rather than kHz
+  <li>Fix setting of RO_FREQU keyword when DarkCurrentGenerator is not active (was resulting in segmentation fault)
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Read Programme_Type when reading EXT_APP_ObservationRequests file and use to set output filenames, header keywords, and PROGRAMME_TYPE column in MPS_PRE_VisitConstraints
+  <li>Support Non_Time_Critical_Requests as well as Time_Critical_Requests when reading EXT_APP_ObservationRequests file
+</ul>
+
+<h4>Release 9.5.1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Subtract the original image used to construct the frame transfer smear trail from the resulting trail (the initial image before shifting starts is part of the exposure, not the trail). This ensures that a vertical profile along the truth smear trail is uniform in the absence of jitter / FOV rotation. 
+  <li>Fix bug which was causing a segmentation fault when the UserFluxModifier module is run and a full frame image is generated
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Calculate and fill values for new DPU parameters ADC_N5V (fixed at -5.121V) and ADC_TEMP1 (sinusoid with period of CHEOPS orbit, amplitude 1, mean 21degC) in SCI_RAW_ImageMetadata
+  <li>set CCDTimingScript column values in SCI_RAW_ImageMetadata according to https://redmine.isdc.unige.ch/projects/cheops/wiki/CCD_Read-Out_Timing_Scripts (previously the RoScrpt keyword was set in SCI_RAW_SubArray/SCI_RAW_FullArray, but the metadata column always had value 1) 
+  <li>Update HkEnuConversion V0006 to V0007 (in principle has no effect for CHEOPSim)
+</ul>
+
+<h4>Release 9.5</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li>Apply Gaussian smearing (sigma = 0.05% by default) to each of the wavelength binned empirical flat fields and apply an offset (default 0) to the effective temperature of the black body used to weight those flat fields, so that the flat field applied in CHEOPSim is not identical to that used for the flat field correction in the data reduction pipeline. 
+  <li>Increase cosmic ray rate to take into account that CRs can still affect the image during readout: total time exposed to CRs is exposure time plus half the readout time 
+  <li><a href="https://redmine.isdc.unige.ch/issues/16112" target="_blank">Issue #16112</a>: Fill new column STACKING in SCI_RAW_ImagetteMetadata to indicate the imagette stacking number
+  <li>Update corresponding to Change <a href="https://redmine.isdc.unige.ch/issues/16458" target="_blank">Change #16458</a> in common_sw: Add keywords relating to the CCD readout setup to SCI_RAW_SubArray and SCI_RAW_FullArray and SCI_RAW_Imagette: ROUNDING, NLIN_COR, RO_SCRPT, RO_HW, RO_FREQU 
+  <li><a href="https://redmine.isdc.unige.ch/issues/16364" target="_blank">Issue #16364</a>: New option to set the readout hardware to redundant rather than main, in which case the overscan column data is stored in SCI_RAW_OverscanRight and SIM_RAW_UnstackedOverscanRightImage rather than SCI_RAW_OverscanLeft and SIM_RAW_UnstackedOverscanLeftImage
+  <li><a href="https://redmine.isdc.unige.ch/issues/16420" target="_blank">Issue #16420</a>: Change format of imagette content from uint16->uint32 to allow stacking, corresponding to change in common_sw 9.3
+  <li>Remove the old CCD margin Data Structures, in correspondance with update <a href="https://redmine.isdc.unige.ch/issues/14795" target="_blank">#14795</a> in common_sw
+  <li><a href="https://redmine.isdc.unige.ch/issues/16365" target="_blank">Issue #16365</a>: Input star catalogue file can be either EXT_DRFT_StarCatalogue and EXT_PRE_StarCatalogue. If the input is not EXT_DRFT_StarCatalogue, CHEOPSim creates an EXT_DRFT_StarCatalogue output file in addition to the EXT_PRE_StarCatalogue output, for which the only difference is that the Visit counter is 0.
+  <li><a href="https://redmine.isdc.unige.ch/issues/16374" target="_blank">Change #16374</a>: Define new header keywords DATANAME, AP_RADI and AP_TYPE and new columns ROLL_ANGLE, LOCATION_X and LOCATION_Y in SCI_COR_Lightcurve
+  <li>Update the filenames for throughput QE and PSF as they appear in the reference_files.txt output file to correspond to the filenames in https://redmine.isdc.unige.ch/projects/cheops/wiki/Reference_files, and provide URLs to the file locations
+  <li>Update REF_APP_HkEnumConversion to V0006 for compatibility with common_sw 9.3; It is noted that the temperatures thermAft_[1-4] and thermFront_[1-4], which had previously corresponded to the temperature variations in CHEOPSim, are no longer present in the instument database, so no longer exist in in SCI_RAW_HkIfsw.
+  <li>Update SOC_APP_LeapSeconds file from V0002 to V0003 (identical in practice since the only change is no. of decimal places for UTC time, but the extra digits are 0s)
+</ul>
+
+<h4>Release 9.4.1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Set NEXP and TEXPTIME keywords correctly for imagettes using imagette stacking number rather than sub-array stacking number
+  <li>Only calculate and assign an imagette stacking number (replacing default value 1) if stackImagettes is true. Was resulting in a segmetation fault for some configurations due to the size of the imagette cube not being correctly assigned.
+  <li>Protect against invalid time step in HKWriter resulting in segmentation fault
+  <li>Use std::nearbyint rather than std::round in order to round to next even when half way between integers (1.5->2, 2.5->2, 3.5->4, 4.5->4 etc). Important for mean rather than coadd stacking, where values can be exactly half way between integers e.g. for stacking number 2. Roland says that this is how rounding will be done onboard.
+</ul>
+
+<h4>Release 9.4</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/16041" target="_blank">Anomaly #16041</a>: Require that time is later than the visit start time and hence the V_STRT validity time keywords for entries written to SCI_RAW_Attitude file
+  <li><a href="https://redmine.isdc.unige.ch/issues/16045" target="_blank">Anomaly #16045</a>: For SCI_RAW_Centroid output file, set timestamp in filename to the visit start time rather than the first sub-array image mid-time, and set validity start time to the visit start time rather than the sub-array time series start time
+  <li>Use visit start time rather than sub-array series start time to define filename timestamp and validity start keyword for ExtPreStarcatalogue and SIM_TRU_FlatField output files
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Support averaging as alternative to coaddition for image stacking
+  <li>Support circular sub-arrays and imagettes
+  <li>Support stacking of imagettes
+  <li>Support static imagettes (fixed position on CCD - required for imagette stacking) as an alternative to dynamic imagettes (follows centroid position) and set Cropping header keyword accordingly
+  <li>Default imagette size increased from 30 to 35 to match change in MPS
+  <li>Imagettes are no longer output if sub-arrays are not stacked
+  <li>Set STACKING keyword to 'none' when no stacking is performed, for sub-arrays (including margins) and imagettes
+  <li>For stacked images/imagettes, the duration, used to define the image mid-time, is from the start of the first exposure to the end of the last exposure, not including the gap after the end of the last exposure in the case where the repetition period is longer than the exposure duration (applies to configurations with exposure durations shorter than 1 second). Perviously, the gap was included.
+</ul>
+
+<h4>Release 9.3</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Bugfix in calculation of stellar surface gravity used as input to calculation of limb darkening coefficients. The effect is to make transits more U-shaped and less V-shaped.
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Extend support for target star spectral type to include O7V-F9V stars
+</ul>
+
+<h4>Release 9.2.1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>If a user provided flat field fits file is uploaded, add a metadata extension to the file so that the format is compatible with the DRP
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Add option to increase cosmic ray energies by a user specified factor
+</ul>
+
+<h4>Release 9.2</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/15373" target="_blank">Issue #15373</a>: Add the dead pixels in the FM2 measured flat field with sensitivity less than 80% of nominal, to the list in the AUX_RES_BadPixels file. The number depends on the wavelength weighting of the flat field components and therefore on the spectral type. There are 11 with sensitivity below the threshold of 0.8 for the combined flat field using the default BB spectrum for a G0V star.
+  <li>Store warm (>2e-/pix/s with default settings) and hot pixels (>5e-/pix/s with default settings) from the empirical dark frame in REF_APP_BadPixels and truth data.
+  <li>Plot light curve output by Data Reduction if available, in addition to the incident and ideal light curves (to be included in png/ directory of CHEOPSim job output)
+  <li>Programme Type, PI Name and PI User ID are now configurable, though currently only by editing runCHEOPSim.xml (i.e. there are no fields directly in the web interface, but the runCHEOPSim.xml file with values set can be uploaded to the web interface)
+</ul>
+
+<h4>Release 9.1</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/15281" target="_blank">Issue #15281</a>: support non-integer repetition periods. Previously, the repetition period was always equal to the exposure time rounded up to the nearest integer. Now the repetition period is eqaul to 1s plus the exposure time for sub-1s exposures, and equal to the exposure time for longer exposures. The jitter times series has a time resolution of 1s, so the nearest point to the current time in the simulation is used.
+  <li>Relating to the previous point: For single exposures with duration<1s, image mid-times are set to the midpoint of the exposure rather than the midpoint between image start times (i.e. when exposure duration does not equal repetition period) - affects timestamps in SCI_RAW_Centroid and SCI_RAW_ImageMetadata, and TSTRT/TSTOP keywords in all image cube files.
+  <li><a href="https://redmine.isdc.unige.ch/issues/15411" target="_blank">Issue #15411</a>: Delay the start time of the sub-array image sequence by one exposure duration (corresponding to the full frame image) + 35s. This is to simulate a typical scenario in which a full frame image is taken 30s after the start of the visit, and there is a 5s gap between the end of the full frame exposure and the start of the sub-array image sequence. If no there is full frame image, then the delay is fixed at 30s. The content of the central 200x200 of the full frame exposure is no longer identical to the first sub-array (takes into account the difference in jitter and roll angle in the time between the full frame and first sub-array, and the seed for random number generation is no longer reset for the first sub-array). The time series for JitterProducer and OrbitSimulator (roll angle, temperature, lat/long, etc), and hence HK data, run from the start of the visit. Other time series (including incident flux and stray light) run from the start of the first sub-array (the full frame uses the same incident flux and stray light as the first sub-array). Timesteps prior to the start of the sub-array sequence are only evaluated if either JitterProducer or OrbitSimulator are active.
+  <li>Write out the list of input reference files used by the CHEOPSim job to a new file reference_files.txt in the conf/ directory
+  <li>For now, always use a single image cube for stacked images and imagettes, since DRP cannot currently work with multiple input file. The "Maximum number of images per FITS image cube" parameter now applies only to the input to the DFS (unstacked images).
+  <li>No longer write out background_stars.txt in the conf/ directory, superseded by EXT_PRE_StarCatalogue file in the data/ directory
+</ul>
+
+<h4>Release 9.0</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Fix bug affecting truth cosmic images when the sub-array is located off centre
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Use exposure time rather than repetition period to determine the distinction between faint/fastFaint read mode and to determine amount of dark current before taking into account readout time (only affects non-integer exposure durations)
+  <li>Add new parameter targetLocationFromJitter to optionally use the jitter offsets to define the target location. This allows to have a different target location for each image in the same visit, needed for the SOC Acceptance test 2 M&C dark frame datasets.
+  <li><a href="https://redmine.isdc.unige.ch/issues/15283" target="_blank">Issue #15283</a>: Use new margin data structures also for SCI_RAW_FullArray (keeping old structures as additional extensions for now)
+  <li>Update REF_APP_HkEnumConversion file for compatibility with common_sw r_9.0
+  <li>REF_APP_FlatField no longer has associated HDUs for margins - remove filling of this information
+  <li>Set value for observationId column in SCI_RAW_HkIfsw housekeeping data output
+  <li><a href="https://redmine.isdc.unige.ch/issues/15184" target="_blank">Issue #15184</a>: Set value ffff=65535 for Left/RightDarkColMask in image metadata
+</ul>
+
+<h4>Release 8.1</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/14728" target="_blank">Issue #14728</a>: Add new truth output for frame transfer smear trails in SIM_RAW_DoublePrecisionSubArray image format
+  <li> Add new truth output for cosmic ray trails in SIM_RAW_DoublePrecisionSubArray image format
+</ul>
+
+<h4>Release 8.0</h4>
+
+For the full set of changes w.r.t. the previous production release (r_7.3.4), see also the release notes for release candidate r_8.0_rc1.
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>In interpolation of longitude, use special treatment when the two points to be interpolated between are on either side of the boundary between 180 and -180. 
+  <li>Applies only to release candidate 8.0_rc1: Distinction between faint fast and faint readout modes was inverted
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Support output of a time series of full frame images in format SCI_RAW_FullArray. Such images will be output with one exposure per file (exposuresPerStack is required to be 1), instead of as a SCI_RAW_SubArray image cube, if the sub-array dimensions are set to 1024x1024 in FocalPlaneGenerator
+  <li>Set value of SDS counter in HKWriter, defining the value as the number of CEs that have been discarded up to the current time
+  <li>Update CE counter and SDS counter during Earth occultation and SAA even when images are not written out
+  <li>Support omission of first N stacked images and only writing out of every Nth image only, with CE counter and SDS counter updated accordingly (needed for M&C datasets); move counting of number of valid stacked images (to define size of image cube) from OrbitSimulator to FocalPlaneGenerator because the latter is always called if images are generated
+</ul>
+
+<h4>Release 8.0_rc1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/14910" target="_blank">Defect #14910</a>: fix bug introduced in release 7.3.4 (fixing defect #14733), which results in the orbit data used to calculate the satellite data for a given time step of the simulation being offset by 5 minutes. Also add back missing row for full frame image in MPS_PRE_VisitConstraints.
+  <li><a href="https://redmine.isdc.unige.ch/issues/14910" target="_blank">Defect #14910</a>: Calculate orbit parameters at midtimes of each exposure instead of at the start of each exposure, so that the eangles to sun, moon and Earth limb in the image metadata are at times corresponding to the image mid-time.
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/14789" target="_blank">Issue #14789</a>: Update to CCD margin data structures, also appending old data structures in image mode; Update margins in reduced mode (previously all collapsed to 3 values per row). Write CCD margin data as floats rather than integers; Set keyword values for STACKING (new margin data structures + SCI_RAW_SubArray and SCI_RAW_Imagette), MRG_PROC (specific to each margin in reduced mode) and MRG_DTY1-4.
+  <li><a href="https://redmine.isdc.unige.ch/issues/14725" target="_blank">Issue #14725</a>: Option to omit SAA and Earth occultation flagged images from output, replacing the option to omit images for which jitter flags are invalid. To enable this, OrbitSimulator processing for all time steps is now done before the main time loop, so that the size of the image cube is known before any images are written to disk.
+  <li>Support reading of parameters from EXT_APP_ObservationRequests file as alternative to MPS_PRE_Visits file. Parameter values for start time, exposure duration, exposures per stack, number of stacked images, full frame flag, pointing RA and dec obtained from EXT_APP_ObservationRequests or MPS_PRE_Visits are now passed to the CHEOPSim configuration file via the web interface rather than being directly read in CHEOPSim.
+  <li><a href="https://redmine.isdc.unige.ch/issues/14727" target="_blank">Issue #14727</a>: Change limit on data cube size for imagettes so that one imagette file maps to a single SubArray file (number of imagettes per imagette file is equal to the number of images per stacked image cube multiplied by the number of exposures per stack).
+  <li>Ideal light curve changed so that it corresponds to the incident light curve with only photon noise added by drawing from a Poisson with lambda equal to the incident photon flux. No aperture photometry is performed. Units for both incident light curve and ideal light curve changed so that they are both in electrons (i.e. after global throughput but before bias offset and electronic gain. 
+  <li><a href="https://redmine.isdc.unige.ch/issues/11745" target="_blank">Issue #11745</a>: Extend support for spectral types to include F-type stars in the case of target stars, including new limb darking coefficients (also updated taking into account the latest optical throughput*QE) and additional stellar granulation files. Also support B, A and F spectral types for background stars.
+  <li>Improve memory usage by holding the positions of each star in memory only for the current time step, avoiding memory related failures for jobs with large numbers of stars.
+  <li>Update the threshold on the exposure duration used to distinguish faint and bright readout modes from 2s to 2.226s, and use a different threshold of 12s for reading out only the window rows (faint fast mode) vs reading the whole frame (faint mode).
+  <li>Support different readout noise for full frame and sub-array images: readout noise for full frame image is now always 9ADU regardless of value for sub-array images, which defaults to 6 ADU or 9ADU depending on the exposure duration.
+  <li>Store truth information for zodiacal light and stray light.
+</ul>
+
+<h4>Release 7.3.4</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Increase depth of Earth's atmosphere from 20km to 100km in calculating angle to Earth limb 
+  <li>Put the EXT_PRE_StarCatalogue output file in the data directory of the CHEOPSim output rather than in the conf directory (the input EXT_PRE_StarCatalogue file, if provided, is retained in conf)
+  <li>Ensure that focal plane positions are consistently calculated with and without FOV rotation: it is now required that OrbitSimulator is run if JitterProducer is run, and in the case of jitter without FOV rotation, the orbit parameters at the start of the simulation are used to define the (constant) roll angle and jittered pointing direction, such that the jitter shifts are consistent whether or not FOV rotation is applied.
+  <li><a href="https://redmine.isdc.unige.ch/issues/14622" target="_blank">Defect #14622</a>: Extend visit start and end times by one exposure duration before and after the end of the visit to cover the full frame image and houskeeping data. Calculate orbit data (filled to AUX_RES_Orbit output file) for additional points 5 minutes before the start of the visit, and 5 minutes after the visit, to ensure orbit interpolation is possible at the times of the full frame image and all houskeeping data.
+  <li>Add a row at the start of MPS_PRE_VisitConstraints to correspond to the full frame image 
+  <li><a href="https://redmine.isdc.unige.ch/issues/14733" target="_blank">Defect #14733</a>: Set visit start and end time header keywords for MPS_PRE_VisitConstraints to match the values of those keywords in MPS_PRE_Visits
+  <li>Fix VStopU keyword for EXT_PRE_StarCatalogue output (was equal to VStrtU)
+</ul>
+
+<h4>Release 7.3.3</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Fix asymptotic increase of cosmic ray energy for incident polar angle < 0.05 degrees
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Propagate Program Type from input MPS_PRE_Visits file (if provided) to outptut filenames and header keywords
+</ul>
+
+<h4>Release 7.3.2</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>SC_RA and SC_DEC in SCI_RAW_Attitude correspond to vector from SC to target, not Earth to SC. Also fix calculation of SC_RA, SC_DEC and SC_ROLL_ANGLE for extra 2 rows in SCI_RAW_Attitude needed for DFS.
+  <li>In ShotNoiseGenerator, generate a new instance of the Poisson RNG with a new seed for each call instead of resetting the existing instance using the new seed, in order to ensure that the noise pattern is identical for non-hot pixels with and without the presence of hot pixels (this is a fix to a new feature in release r_7.3).
+  <li>Use FEE temperature rather than CCD temperature for direct gain vs temperature variation.
+  <li>Read observation category from MPS_PRE_Visits (if provided) rather than hardcoding value "time critical" and propagate the value to header keywords of output data structures.
+  <li>Fix bug in setting TransitTime and TransitPeriod columns in MPS_PRE_Visits output when a full frame image is output in addition to the sub-arrays. 
+  <li>Don't read margin mode from MPS_PRE_Visits for now, because this cannot currently be set by the user in generating the MPS_PRE_Visits.
+  <li>Remove minimum value of 5s on RepetitionTime keyword in ImageMetaData.
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Improvement to processing time for cosmic ray generation, allowing to set factor 1000 increase in CR rate within SAA by default without significantly affecting overall processing time.
+  <li>MPS_PRE_Visits file is now always output, rather than only when OrbitSimulator is run. MPS_PRE_VisitConstraints extension is only appended when OrbitSimulator is run.
+  <li>New standalone module HKWriter for writing housekeeping data. Previously this was included in ImageWriter, but separating it out allows to output HK data independently from image generation.
+</ul>
+
+<h4>Release 7.3.1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>REVERT the following change introduced in r_7.3_rc3, in order to retain the guarantee of a fixed number of pixels within the photometric extraction aperture mask: <i>More accurate photometry by defining the set of pixels within the aperture radius R as those whose centres are within distance R of the barycentre position, rather than within distance R of the centre of the pixel containing the barycentre.</i>
+</ul>
+
+<h4>Release 7.3</h4>
+
+Identical to release candidate 7.3_rc3. For the full set of changes w.r.t. the previous production release (r_7.2), see the release notes for release candidates r_7.3_rc1, r_7.3_rc2 and r_7.3_rc3.
+
+<h4>Release 7.3_rc3</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Apply global throughput to frame transfer smear trails as well as to the PSFs
+  <li>When reading RA and dec from EXT_PRE_StarCatalogue, read the floating point value directly rather than interpreting as a string then converting back to double to avoid loss of precision. 
+  <li>Bugfix reading information from user uploaded jitter file
+  <li>Robustness improvements: use lround rather than round in rounding to integers; instead of using floor and static_cast<int>, use only the latter since this truncates anyway; read time from jitter file as integer rather than float.
+  <li>Print RA, dec for each star to log file in degrees rather than arcseconds
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/14357" target="_blank">Issue #14357</a>: Apply jitter to pointing direction before projection onto CCD plane with FOV rotation, required for AOCS open loop test. All three compenents of the Absolute Pointing Error (APE) are read by JitterProducer (roll pitch and yaw pointing errors rather than only pitch and yaw) at 1 second intervals, and are used to calculate the perturbations to the pointing direction and to the roll angle at any given time. The fits_world_to_pix routine used to project the field of view onto the CCD plane now uses the jittered pointing directing and jittered roll angle as input, replacing the previous implemetation in which jitter was applied to the position on the CCD plane after projection.
+  <li>The direction of roll is reversed since the rotation is about the negative of the line of sight vector when facing the CCD
+  <li>Truth data structures (SIM_TRU_Sub/FullArray) updated to store the position of the target PSF for each second of each exposure (previously only the mean position over each exposure was stored).
+  <li>Make the intended target location (centre of roll) on the CCD plane configurable.
+  <li>More accurate photometry by defining the set of pixels within the aperture radius R as those whose centres are within distance R of the barycentre position, rather than within distance R of the centre of the pixel containing the barycentre.
+  <li>Add parameter to StarProducer to secify whether or not the target star position should be used to define the pointing direction, overriding the pointing direction in the Visit configuration (either manual input, or via MPS_PRE_Visits)
+  <li>Require that the position of each star is within a circular region enclosing the sub-array plus a margin, rather than a square region, or (for frame transfer smearing) within the vertical column above and below the sub-array, rather than within the same column plus margins.
+  <li>Make the StarProducer input parameter to define the magnitude threshold double rather than integer
+  <li>Truncate the precision of the position of each star on the CCD plane to 6 decimal places, in order to stabilise te position so that a star located at the centre stays exactly centred when there is roll but no jitter.
+  <li>If the target star is offset from the centre of roll, the values for intended LocationX/Y in SCI_RAW_Centroid are now set to the centre of roll rather than to the mean position of the PSF.
+  <li>Threshold exposure duration to change from bright to faint readout mode increased from 5s to 12s (update from DLR)
+  <li>Update REF_APP_HkEnumConversion from V0002 to V0004
+  <li>Set CECounter values for SCI_RAW_ImagetteMetadata
+</ul>
+
+<h4>Release 7.3_rc2</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Update definition of CHEOPS magnitude to include QE as well as optical throughput, affecting conversion between CHEOPS magnitude and V-band magnitude introduced in r_7.3_rc1
+  <li>Assign several missing header keywords for SCI_RAW_Imagette
+  <li>Units for target location columns changed from centipixels to pixels for SCI_RAW_Centroid and MPS_PRE_Visits
+  <li>ThermAft and ThermFront metadata and HK parameter values assigned as floats rather than uint16
+  <li>Set centroid validity to 1 rather than 0 for full full frame image 
+  <li>Print a meaningful error message if there are no stars within the field of view 
+  <li>Fix bug in determining number of images per cube
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Initialize a uniform random number generator to generate seeds for the Poisson RNG. This allows to reset the Poisson RNG and assign a new seed after each call. This in turn guarantees that the output of the Poisson RNG for a given pixel will always be the same for a given value for that pixel since it cannot depend on previous states of the RNG. This means that the shot noise pattern will be identical for non-hot pixels with and without hot pixels switched on. (Request from Pascal Guterman for DRP)
+  <li><a href="https://redmine.isdc.unige.ch/issues/13207" target="_blank">Issue #13207</a>: New module IdealNoiseCurveGenerator, to generate an 'ideal' light curve and noise curve corresponding to the absence of any detector effects (the only noise sources are those applying to the photons incident on the CCD), for comparison with DRP output
+  <li><a href="https://redmine.isdc.unige.ch/issues/13191" target="_blank">Issue #13191</a>: Set start time of full frame image to one exposure duration before the start of the main simulation (sub-arrays). Previously the time of the full frame image was the same as that of the first sub-array. Note that the content of the full frame image still corresponds to that of the first subarray image.
+  <li><a href="https://redmine.isdc.unige.ch/issues/13218" target="_blank">Issue #13218</a>: Set values for new keywords HK_STAT_PIX_DATA_OFFSET (equal to electronic bias offset) and HK_STAT_CCD_TIMING_SCRIPT_ID (to 1, corresponding to overscan columns on left) in image metadata
+  <li>Set the CE integrity to 0 and set the CE counter for image metadata. CE counter for sub-array images starts from 1 unless counter=1 is already taken by a full frame image in which case the counter starts from 2
+</ul>
+
+<h4>Release 7.3_rc1</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/13190" target="_blank">Issue #13190</a>: Analog electronics stability using GainCorrection formula for electronic gain as a function of bias voltages, as defined in a new REF_APP_GainCorrection input reference file. REF_APP_GainCorrection replaces nominal gain value as input parameter to BiasGenerator module since the formula includes the nominal gain value; New parameter to switch on/off analog electronics stability;
+  <li>Related to <a href="https://redmine.isdc.unige.ch/issues/13190" target="_blank">Issue #13190</a>: Set temperature dependent voltages for all 4 voltages using new temperature coefficients taken from CHEOPS-DLR-INST-TR-010 Issue 1.0 table 21, instead of fixed defaults for VOG, VRD, VSS and sinusoidal VOD; Read nominal voltages from REF_APP_GainCorrection header keywords instead of hardcoding. The FEE temperature dependence with time (which defines the time dependence of the voltages and hence the time dependence of the gain) is modeled as a sinusoid: new parameters are provided to define sinusoidal FEE temperature variation independently of CCD temperature variation.
+  <li><a href="https://redmine.isdc.unige.ch/issues/13274" target="_blank">Change #13274</a>, <a href="https://redmine.isdc.unige.ch/issues/12838" target="_blank">Anomaly #12838</a>: Calculate difference between CHEOPS magnitude and V-band magnitude in a new method StarProducer::cheopsMinusVbandMagnitude(effectiveTemperature); Optionally output this information as a function of effective temperature, together with the electron to photon conversion factor to a REF_APP_FluxConversion file; Fill values for new keywords MAG_VERR, MAG_CHPS, MAG_CERR for all relevant data structures; Add unit test to check that the result of StarProducer::cheopsMinusVbandMagnitude matches the content of the corresponding REF_APP_FluxConversion file; Star class now requires both CHEOPS and V-band magnitudes in the constructor and provides a getEffectiveTemperature method given the spectral type; WavelengthDependence class is now able to calculate the wavelength integrals for either V-band or CHEOPS transmission, and is able to generate a the spectrum of Vega as an alternative to a black body spectrum.
+  <li><a href="https://redmine.isdc.unige.ch/issues/13157" target="_blank">Issue #13157</a>: Fill columns X_OFF_FULL_ARRAY, Y_OFF_FULL_ARRAY, X_OFF_SUB_ARRAY, Y_OFF_SUB_ARRAY for SCI_RAW_ImagetteMetadata, replacing header keywords X_WINOFF and Y_WINOFF in SCI_RAW_Imagette, so that imagette position offsets are defined for each imagette in the cube.
+  <li><a href="https://redmine.isdc.unige.ch/issues/13188" target="_blank">Issue #13188</a>: Update the indexing of the XPOS column in REF_APP_BadPixel such that XPOS=0 corresponds to the left edge of the exposed part of the CCD, with negative values used for pixels in the left margin, rather than 0 corresponding to the leftmost overscan column.
+  <li>Use Poisson rather than Gaussian random number generator to generate the number of electrons per pixel in cosmic trails in order to avoid possible flutuations to negative values
+  <li>Update Program Type for all CHEOPSim ouputs from 99 to 90 (affects filenames and header keywords)
+  <li>Update HK data parameter names (HK_ prefix removed) to be compatible with updates to SCI_PRW_Hk* and SCI_RAW_Hk* data structures of common_sw 7.4, corresponding to CHEOPS I-DB MIB 2.20
+  <li><a href="https://redmine.isdc.unige.ch/issues/13040" target="_blank">Issue #13040</a>: Update enum values: Margin mode "collapsed" -> "total collapsed", and ObsCat "TIME-CRITICAL" -> "time critical"
+  <li>Remove setting of VisitCounter column for MPS_Visits and MPS_PRE_Visits and remove setting of CCD_ADU column for EXT_PRE_StarCatalogue (both are removed from the data structures in common_sw r_7.3)
+</ul>
+
+<h4>Release 7.2.1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Fixed a bug in the calculation of the median within an annulus around the target PSF, used to define the background to be subtracted in the light curve extraction. Affects jobs with a bright background star located within the annulus (40 < r < 60).
+</ul>
+
+<h4>Release 7.2</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Only write centroid for full frame if writeCentroid option is selected
+  <li>Initialize margin mode for the Visit to "undefined" and only assign a value after it is known whether or not ImageWriter will be run
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Support new input parameter monochromaticPSFwavelength to allow setting the monochromatic PSF weight to 1 for the specified wavelength and 0 for other wavelengths
+</ul>
+
+<h4>Release 7.1</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/12832" target="_blank">Issue #12832</a>: Output a row to SCI_RAW_Centroid for the full frame as well as sub-array images, with CE_COUNTER=1. CE_COUNTER for sub-array images starts from 2, for now regardless of whether the full frame CE is present.
+  <li>Implement CCD non-linearity as the inverse of a cubic spline defined in the new data structure REF_APP_CCDLinearisation. This replaces a simple polynomial parameterization of the non-linearity.
+  <li><a href="https://redmine.isdc.unige.ch/issues/12990" target="_blank">Issue #12990</a>: Interface to star catalogue: support reading the list of input stars from a FITS file with data structure EXT_PRE_StarCatalogue, and writing the list of stars used in the simulation to an output FITS file of the same data structure.
+  <li><a href="https://redmine.isdc.unige.ch/issues/12990" target="_blank">Issue #12990</a>: Support input of information defining the Visit from a FITS file with data structure MPS_PRE_Visits, including start time, exposure duration, number of stacked and unstacked images, pointing direction, readout mode and margin mode.
+  <li>Round to nearest integer rather than to the next integer when converting from barycentre offset relative to the image centre to the number of pixels by which the centre of the imagette should be shifted.
+</ul>
+
+<h4>Release 7.0</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/12836" target="_blank">Anomaly #12836</a>: Add an extra second to SCI_RAW_Attitude so that the last entry matches V_STOP_U. A further second is added to support input to DFS so that there is an entry later than the OBT time of the last CE.
+  <li>Set year for V_START_U and V_STOP_U and filename for AUX_RES_Orbit to match the simulation year, instead of being fixed to the year of the input orbit file (2018)
+  <li>In PSF barycentre calculation, take into account offset of 0.5 pixels between the centre of pixel (512,512) and the centre of the image, which is at the boundary between pixels 511 and 512 (i.e. 511.5). Affects SCI_RAW_Centroid and imagette centering for configurations in which the use of the truth barycentre (default) is switched off.
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/12562" target="_blank">Anomaly #12562</a>: OBT-UTC correlation file updated to CH_TU2000-01-01T00-00-00_AUX_RES_ObtUtcCorrelation_V0003.fits 
+  <li>Use lowercase for READOUT_MODE header keyword in MPS_PRE_Visits, for consistency with <a href="https://redmine.isdc.unige.ch/issues/12691" target="_blank">Anomaly #12691</a>
+  <li>Only print information about stars from the input file that will be processed to the log file. Also print the total number of stars to be processed to the log file
+</ul>
+
+<h4>Release 6.2</h4>
+
+For the full set of changes w.r.t. the previous production release (r_6.1), see also the release notes for release candidates r_6.2_rc2 and r_6.2_rc1.
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Convert temperatures from Kelvin to Celcius before writing to image metadata and HK data
+  <li>Ensure that the last entry in the AUX_RES_Orbit output is after the time of the last image in order to allow interpolation to the time of the last image
+  <li>Flag for end of life CTI was uninitialized resulting in unpredicable behaviour in certain configurations (affects release candidates r_6.2_rc1 and r_6.2_rc2 only)
+  <li>Avoid crash when writing centroid when JitterProducer is off (affects release candidate r_6.2_rc2 only)
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Update default temperatures and voltages for consistency with CHEOPS-DLR-INST-MA-001 Issue 1.1, affecting image metadata and HK data
+  <li><a href="https://redmine.isdc.unige.ch/issues/12465" target="_blank">Issue #12465</a> As well as PSFs below the sub-array, also generate stray light, zodiacal light, PSF halo and dark current below the sub-array when end of life CTI is switched on. Also apply shot noise and global throughput in the region below the sub-arrray.
+</ul>
+
+<h4>Release Candidate 6.2_rc2</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/12229" target="_blank">Issue #12229</a> Update leap second file
+  <li><a href="https://redmine.isdc.unige.ch/issues/12220" target="_blank">Issue #12220</a> LocationX and LocationY for SCI_RAW_Centroid changed from centre of sub-array relative to edge of sub-array (100,100), to mean position of star taking into account roll during the exposure (but not jitter), in centipixels relative to the edge of the exposed part of the CCD; barycentre changed to being relative to this position instead of relative to the centre of the sub-array
+  <li><a href="https://redmine.isdc.unige.ch/issues/12211" target="_blank">Issue #12211</a> Use CreateFitsFile::buildFileName to set the full filename for the AUX_RES_Orbit and REF_APP_BadPixel outputs following the file naming convention as defined in the DPDD 
+  <li>Set VStrtU and VStopU keywords for REF_APP_BadPixels output
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>New module UserFluxModifier to allow the user the possibility to upload a user defined time series for the incident flux from the target star
+</ul>
+
+<h4>Release Candidate 6.2_rc1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Frame transfer smearing from background stars above as well as below the sub-array
+  <li>Store hot/warm/telegraphic pixel dark current as absolute rate in electrons/s/pixel rather than relative to nominal dark current in REF_APP_BadPixels
+</ul>
+    
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/11927" target="_blank">Issue #11927</a> Charge Transfer Inefficiency: modelled separately for end of life (exponential tails), and begin of life (taking into account charge left behind in traps during shifting during frame transfer and readout). PSFs below the sub-array are processed in PSFGenerator if CTI is switched on in end of life mode. 
+  <li><a href="https://redmine.isdc.unige.ch/issues/11723" target="_blank">Issue #11723</a> Gain non-linearity modelled as 3rd order polynomial (inverse of LUT)
+  <li><a href="https://redmine.isdc.unige.ch/issues/11928" target="_blank">Issue #11928</a> Support manual specification of hot/warm/telegraphic pixel positions and intensities
+  <li><a href="https://redmine.isdc.unige.ch/issues/11839" target="_blank">Issue #11839</a> Support exposure durations less than 1 second
+  <li><a href="https://redmine.isdc.unige.ch/issues/11986" target="_blank">Issue #11986</a> Add global throughput and gain to truth metadata (allows conversion of ADU back to incident photons)
+  <li>Add switch to allow the user to choose whether or not to include readout time in the total time for which dark current accumulates (position dependent, in addition to exposure duration)
+  <li>Set ObsCat, PrpVst1 and PrpVstn header keywords for housekeeping data; remove LOSToEarthAngle from MPSVisitConstriants (removed from data structure, <a href="https://redmine.isdc.unige.ch/issues/12059" target="_blank">Issue #12059</a>)
+  <li>Provide possibility to define the stellar spectrum to be the spectrum of Vega rather than a black body (currently not via web interface)
+</ul>
+
+<h4>Release 6.1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Modify normalization of the diffraction PSF to subtract the halo flux, if HaloGenerator is switched on
+  <li>Convert RA and dec input to BarycentricOffset::offset from arcseconds to degrees
+</ul>
+    
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/11924" target="_blank">Issue #11924</a> Update all header keywords and add new header keywords for consistencey with common_sw release r_6.3; Set values for various pre-existing keywords which were previously left to default values
+  <li><a href="https://redmine.isdc.unige.ch/issues/11924" target="_blank">Issue #11924</a>: Update Dark Frame data structure to version in common_sw release r_6.3 with margins stored as separate extensions to the main image
+  <li>Increase ImageWriter::kJitterTruthSize from 60 to 600 to support a maximum exposure duration of 600 rather than 60s
+Add unit tests for every CHEOPSim module
+</ul>
+
+<h4>Release 6.0.1</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li>Angle between stars and the pointing direction did not take into account cos(declination), resulting in stars incorrectly being omitted from the FOV when pointing declination for high declinations
+  <li>Remove integer rounding from ChargeTransferSimulator so that rounding occurs only in ImageWriter
+  <li>Ignore entries in uploaded jitter files beyond 48 hours rather than throwing an exception if 48 hours is exceeded
+  <li>If a background star in an uploaded star file has a spectral type O, B, A or F, print a warning message to the log file to indicate that the star is being omitted rather than throwing a runtime error 
+  <li>Throw runtime error with message if a module requiring a star is called when there are no stars in the FOV
+</ul>
+  
+<h4>Release 6.0</h4>
+
+For the full set of changes w.r.t. the previous production release (r_5.1), see also the release notes for release candidates r_6.0_rc2 and r_6.0_rc1.
+
+<h5>Bug fixes</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/11467" target="_blank">11467</a> Fix [-180;180] constraint for orbit longitude values in AUX_RES_Orbit
+  <li>Fix name of orbit output file: RES_AUX_Orbit -> AUX_RES_Orbit
+  <li>Fix initialization of m_VOD housekeeping data voltage
+  <li><a href="https://redmine.isdc.unige.ch/issues/11545" target="_blank">11545</a> Roll angle calculation was corrupted for simulation durations with non-integer number of minutes
+  <li>Avoid divide by zero errors in plotting animation images on log scale
+  <li>Don't use circular truncation and 1/r^3 tails for FLAT PSF case  (affects release candidates r_6.0_rc1 and r_6.0_rc2 only)
+</ul>
+    
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/11597" target="_blank">11597</a> Include effect of orbit altitude and Earth curvature on angle to Earth limb
+  <li><a href="https://redmine.isdc.unige.ch/issues/11586" target="_blank">11586</a> Take into account parallax due to orbit of satellite around Earth in determining moon angle to LOS
+  <li>Convert MJD to BJD using Barycentric offset for light curve keywords
+  <li>More accurate determination of whether or not current orbit position is over SAA
+  <li>New configurable parameter to specify cadence for AUX_RES_Orbit output
+  <li>Change default setting for payloadInLoopOnly parameter to false
+  <li>Updates to correspond to common_sw r_6.2: rename VOS voltages to VOG in HK data and update kDefaultVOG from 3.0 to 3.2, in accordance with the FM1 chip test report; replace DataVer keyword with ProcNum and add ArchRev (value 0); replace ImageIndex keyword with CeCounter in SCI_RAW_Centroid; New keyword ObsID in hk2RawProcessing: set to value previously used for MpsVisit (the latter will later be replaced with ReqID)
+  <li>Set SPECTYPE FITS keyword for output data structures
+  <li>Update HkEnumConversion version for housekeeping data generation
+</ul>
+
+<h4>Release Candidate 6.0_rc2</h4>
+
+<h5>Bug fixes</h5>
+<ul>
+  <li> Throw a runtime error in TransitFluxModulator if the semi major axis of the orbit is less than the radius of the star
+  <li> Throw a runtime error in PSFGenerator in setting the scale for the 1/r^3 tail extension based on a ring of pixels if any of the ring pixels is outside the Image array (affects release candidate r_6.0_rc1 only)
+</ul>
+    
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/11154" target="_blank">11154</a> Use bright star readout mode for exposure durations between 1 and 5 seconds. In this case, only the 200 rows corresponding to the sub-array are read out, with the rest being dumped, reducing the time for dark current accumulation during readout.
+  <li><a href="https://redmine.isdc.unige.ch/issues/11155" target="_blank">11155</a> Support configurations with arbitrary numbers of instantiations of TransitFluxModulator, StellarNoiseFluxModulator and StellarVariationFluxModulator for different stars.
+  <li><a href="https://redmine.isdc.unige.ch/issues/11157" target="_blank">11157</a> Generate smear trails for hot/warm/telegraphic pixels by running DarkCurrentGenerator before FrameTransferSmearer and PhotonNoiseGenerator. DarkCurrentGenerator no longer applies shot noise for dark electrons. Shot noise is instead now applied for both signal and dark electrons in PhotonNoiseGenerator (renamed to ShotNoiseGenerator in the web interface / user guide). 
+  <li> PhotonNoiseGenerator now always uses Poisson rather than Poisson for N<100 and Gaussian for N>100.
+  <li> Make code more efficient when there are background stars above or below the sub-array but FrameTransferSmearer is off by not processing those stars.
+</ul>
+
+<h4>Release Candidate 6.0_rc1</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/11152" target="_blank">11152</a> SAA flag defined according to SAA map together with latitude and longitude of the satellite orbit. Used by the CosmicRayGenerator module to increase the cosmic ray flux within the SAA by a user specified factor.
+  <li><a href="https://redmine.isdc.unige.ch/issues/11152" target="_blank">11152</a> When OrbitSimulator is on, output MPS_PRE_VisitConstraints data structure containing angles to earth limb, sun and moon, Earth occultation flag and SAA flag
+  <li><a href="https://redmine.isdc.unige.ch/issues/11153" target="_blank">11153</a> New module HaloGenerator to model scatter (simplified Peterson model) and ghosts (uniform across CCD with flux according to field angle)
+  <li><a href="https://redmine.isdc.unige.ch/issues/11151" target="_blank">11151</a> Extension of PSF tails using 1/r^3 model
+  <li><a href="https://redmine.isdc.unige.ch/issues/11156" target="_blank">11156</a> Limb darkening coefficients determined according to spectral type, rather than being directly input by the user
+</ul>
+
+<h4>Release 5.1</h4>
+
+For the full set of changes w.r.t. the previous production release (r_5.0), see also the release notes for release candidate r_5.1_rc1.
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Fixed a bug that was causing jobs to fail when running photometric extraction only from an existing dataset
+  <li>First entry in SCI_RAW_Attitude corresponds to start of simulation rather than 1s later
+  <li>Output SCI_RAW_Attitude whether or not FOV rotation is on
+</ul>
+  
+<h5>Bug fixes affecting release candidate r_5.1_rc1 only:</h5>
+<ul>
+  <li>Avoid duplication of list of stars when the full frame option is on, resulting from multiple calls to StarProducer::doBegin
+  <li>Fixed a bug which was causing the upper bound of wavelength range to be incorrectly set for the Zodiacal light flux calculation
+  <li>Fixed pointing direction printout
+</ul>
+  
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/11047" target="_blank">11047</a> Expand list of spectral types to full list [G,K,M][0-9] and update values for mass, radius and effective temperature for each spectral type according to http://www.pas.rochester.edu/~emamajek/EEM_dwarf_UBVIJHK_colors_Teff.txt. This change required also the following changes:
+  <ul>
+    <li>Change default effective temperature (used ot define wavelength weights when no target star is present) from 5572.361 to 5660 in StrayLightGenerator, GlobalThroughputGenerator and FlatFieldGenerator
+    <li>Update list of stellar granulation files to correspond to the updated stellar parameters for each spectral type
+  </ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/11069" target="_blank">11069</a> Support user upload of input files: stray light, telescope temperature, jitter, throughput, qe, flat field
+  <li><a href="https://redmine.isdc.unige.ch/issues/10952" target="_blank">10952</a> Calculate angles to Sun, Moon and Earth limb and output this information to the image metadata and light curve headers
+  <li><a href="https://redmine.isdc.unige.ch/issues/10948" target="_blank">10948</a> Make image sub-array dimensions and position w.r.t. CCD edges configurable
+  <li><a href="https://redmine.isdc.unige.ch/issues/10953" target="_blank">10953</a> Add flagging of full well and ADC saturation to truth metadata 
+  <li><a href="https://redmine.isdc.unige.ch/issues/10951" target="_blank">10951</a> Add plotting scripts to generate image animation and light curve plots
+  <li>Print out background_stars.txt file containing the list of background stars with positions relative to the pointing direction
+  <li>Update header keywords for common_sw 5.2: remove CHEOPSID, TG_TYPE, OBS_MODE; add SPECTYPE, OBS_CAT, MRG_MODE (latter two for SCI_RAW_SubArray and SCI_RAW_FullArray only)
+  <li>Write validAocs, validScience flags also for full frame truth metadata
+  <li>Set VStrt* and VStop* keywords for light curves and noise curve
+  <li>gain in ADU/electron instead of electrons/ADU
+</ul>
+
+<h4>Release Candidate 5.1_rc1</h4>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/10554" target="_blank">10554</a> Implement orbit model. Output RES_AUX_Orbit data structure and SCI_RAW_Attitude data with configurable cadence.
+  <li><a href="https://redmine.isdc.unige.ch/issues/10824" target="_blank">10824</a> Add roll angle calculation from orbit model, including rapid roll rate over poles for pointing directions close to the orbital plane.
+  <li><a href="https://redmine.isdc.unige.ch/issues/10703" target="_blank">10703</a> Add option to define expected dark current per pixel based on an empirical dark frame rather than a single user defined value for all pixels.
+  <li><a href="https://redmine.isdc.unige.ch/issues/10480" target="_blank">10480</a> Implement temperature dependence for electronic gain.
+  <li><a href="https://redmine.isdc.unige.ch/issues/10480" target="_blank">10480</a> Add QE temperature dependence for the determination of the integrated throughput*QE
+  <li><a href="https://redmine.isdc.unige.ch/issues/10482" target="_blank">10482</a> Extend low edge of wavelength range down from 400nm to 330nm, affecting stellar flux, global throughput, PSF weighting and flat field weighting. For PSF and flat field weighting, for each measurement, instead of taking the weight value calculated at the wavelength corresponding to the measurement, use the sum over weights within a wavelength range corresponding to the wavelength bin centred on the wavelength of the measurement. This allows for the first and last bins to be correctly weighted so that the range covers 330 top 1100nm, corresponding to the wavelength range for the stellar flux and global throughput.
+  <li><a href="https://redmine.isdc.unige.ch/issues/10702" target="_blank">10702</a> Set realistic values for temperatures and voltages in housekeeping data and in image metadata. Update REF_APP_HkEnumConversion file for compatibility for common_sw r_5.2
+  <li>Improved Doxygen documentation
+  <li>Set PROC_CHN keyword for several data structures where it was not defined
+  <li>Move pointing direction definition from StarProducer module to top level configuration
+  <li>Use fits instead of ascii file for stray light input
+  <li>Update OBT2UTC correlation file using format compatible with common_sw r_5.2; migrate from boost::posix_time to UTC/MJD/BJD/OBT/DeltaTime classes from common_sw/utilities; MJD/BJD/OBT values always calculated from UTC using the provided common_sw/utilities functions
+</ul>
+
+<h4>Release 5.0.1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>The weighting of the different wavelength components of the measured flat field was incorrect in release r_5.0: all of the weight was being shared amongst the four lowest wavelength bins (out of 14 bins). Since there is more structure in the flat fields at low wavelength, the bug can be expected to result in some increase in noise when jitter is present.
+</ul>
+
+<h4>Release 5.0</h4>
+
+For the full set of changes w.r.t. the previous production release (r_4.2), see also the release notes for release candidates r_5.0_rc1, r_5.0_rc2 and r_5.0_rc3.
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/10514" target="_blank">10514</a> Fixed bug that was resulting in T_STOP_U/M/O header keyword values not matching the time of the last image in the image cube
+  <li><a href="https://redmine.isdc.unige.ch/issues/10514" target="_blank">10514</a> Onboard time values multiplied (previously in seconds) by 2^16
+  <li><a href="https://redmine.isdc.unige.ch/issues/10515" target="_blank">10515</a> Values of X_ORIGIN and Y_ORIGIN keywords changed from the centre of CCD to the offset w.r.t. the bottom left corner of the exposed part of the CCD, including imagettes
+  <li><a href="https://redmine.isdc.unige.ch/issues/10515" target="_blank">10515</a> Set V_STRT_U, V_STOP_U, V_STRT_M and V_STOP_M keywords to correspond to start of 1st image and end of last image, for images, image metadata, truth metadata, centroid and truth flat field (previously left as default values)
+  <li>Use Bernoulli distribution rather than std::rand to define initial state of telegraphic pixels so that result is machine independent
+  <li>(bug in 5.0_rc2 and 5.0_rc3 only) Calculate PSF integral in double precision to determine normalization
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Allow the possibility to manually set hot pixel positions, by treat telegraphic pixels as hot pixels (i.e. no transitions) if the time constant for transitions is set to 0
+</ul>
+
+<h4>Release Candidate 5.0_rc3</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Fixed bug which was preventing hot/warm/telegraphic pixels and comics being assigned to the 1st column of the right hand CCD margin
+  <li>Fixed a bug in StarProducer which can rarely but unpredictably result in the stellar flux being ~double the correct value
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/10401" target="_blank">10401</a> Updates to truth data:
+  <ul>
+    <li>Increase array size for hot/warm/telegraphic pixel truth data (HOT_* vector columns) 
+    <li>Add hot pixel type (hot, warm, active telegraphic or inactive telegraphic) to truth metadata (HOT_TYPE vector column)
+    <li>Rename BAD_* columns to DEAD_* vector columns (dead pixel truth data) 
+    <li>Include hot/warm/telegraphic/dead/cosmic pixels located in CCD margins in the truth data
+  </ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/10402" target="_blank">10474</a> Configurable seeds for random number generation: flat field, photon noise, dark current and bias noise
+  <li><a href="https://redmine.isdc.unige.ch/issues/10439" target="_blank">10439</a> Configurable seeds for random number generation:  hot/warm/telegraphic pixels, dead pixels and cosmics
+  <li>User now inputs the fraction of pixels that are dead, hot, warm or telegraphic, rather than absolute numbers of such pixels
+</ul>
+
+<h4>Release Candidate 5.0_rc2</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Bugfix in log file printout for global throughput: multiply output flux by the number of exposures per stack 
+  <li>If m_truthBarycentre is true, use (0.,0.) as the barycentre if there is no PSF truth information (allows it to work when PSFGenerator is not run)
+  <li>Set data level keyword to SIM for unstacked image meta data (was L0.5) 
+  <li>(bug in 5.0_rc1 only) Fix increment of cube layer in loop over images for unstacked images and imagettes
+  <li>(bug in 5.0_rc1 only) Fix calculation of wavelength integrated zodiacal light flux
+  <li>(bug in 5.0_rc1 only) Always write truth data for telegraphic pixels whether active or not in order to have consistency in the number of telegraphic pixels from one image to the next
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/10152" target="_blank">10152</a> Support monochromatic PSFs. Separate out throughput and QE from FlatFieldGenerator, since these wavelength dependent quantities are now also needed by PSFGenerator. Introduce new module GlobalThroughputGenerator to apply throughput and QE independently of PSFGenerator and FlatFieldGenerator.
+  <li>Wavelength resolution for integration over throughput and QE increased to 0.5 nm steps
+  <li><a href="https://redmine.isdc.unige.ch/issues/10154" target="_blank">10154</a> Change of PSF data structure to use 4 thermal maps: fixed, cold, hot1, hot2 in place of 14 temperature steps. Breathing is modelled by on the fly interpolation between the PSFs for the hot1 and hot2 thermal cases, instead of using pre-interpolated PSFs in 0.5 degree steps. Require OrbitSimulator to be run in order to select breathing option in PSFGenerator.
+  <li><a href="https://redmine.isdc.unige.ch/issues/9993" target="_blank">9993</a> New module StrayLightGenerator to model stray light; change orbit period from 6000s to 5850s (affects FOV rotation)
+  <li><a href="https://redmine.isdc.unige.ch/issues/9850" target="_blank">9850</a> Add new module StellarVariationFluxModulator to model stellar variations 
+  <li><a href="https://redmine.isdc.unige.ch/issues/10326" target="_blank">10326</a> Add warm pixels: as hot pixels with different factor by which dark current is enhanced
+  <li><a href="https://redmine.isdc.unige.ch/issues/9994" target="_blank">9994</a> Take into account when during the exposure transitions occur for telegraphic pixels, thus also supporting multiple transitions per exposure; provide option to provide telegraphic pixel positions randomly as well as manually; separate parameters for telegraphicPixelRelativeDarkCurrent and hotPixelRelativeDarkCurrent.
+  <li><a href="https://redmine.isdc.unige.ch/issues/9998" target="_blank">9998</a> Support two jitter validity flags flags: VALID_AOCS and VALID_SCIENCE. STATUS flag in image metadata replaced by VALID_AOCS and VALID_SCIENCE in the truth metadata. This information is read back in DataReduction to define the STATUS flag for extracted light curves.
+  <li><a href="https://redmine.isdc.unige.ch/issues/10301" target="_blank">10301</a> Migration to common_sw r_5.0: CCD margins collapsed to columns/rows only output for dark left, dark right and overscan top, and for mean, median, stddev only (no MAD); For full frame image, margins are stored as 2D images only; use of new data structure SCI_RAW_Imagettemetadata, which drops the CCD margin collapsed information for imagettes.
+  <li><a href="https://redmine.isdc.unige.ch/issues/9995" target="_blank">9995</a> Add writing of hot, warm, dark, and telegraphic pixels to new data structure REF_APP_BadPixel
+</ul>
+
+<h4>Release Candidate 5.0_rc1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Bugfix in ADU saturation: saturation when value greater than or equal to 2^nBits instead of equal to
+  <li>Bug fixed in DataReduction which was resulting in a crash when the option to use the truth barycentre is switched off.
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/9994" target="_blank">9994</a> Simulation of telegraphic pixels in DarkCurrentGenerator
+  <li><a href="https://redmine.isdc.unige.ch/issues/8477" target="_blank">8477</a> New module ZodiacalLight Generator: uniform flux across CCD, dependent on pointing direction relative to the sun in ecliptic coordinates
+  <li><a href="https://redmine.isdc.unige.ch/issues/9648" target="_blank">9648</a> Use of real background star fields with a choice between low/medium/extreme crowding
+  <li><a href="https://redmine.isdc.unige.ch/issues/9834" target="_blank">9834</a> New module StellarNoiseFluxModulator: fluctuations of incident flux due to stellar granularity
+  <li><a href="https://redmine.isdc.unige.ch/issues/9835" target="_blank">9835</a> Bleeding of full well saturated pixels in FullWellSimulator
+  <li><a href="https://redmine.isdc.unige.ch/issues/9996" target="_blank">9996</a> random uncertainties added to the flat field correction
+  <li><a href="https://redmine.isdc.unige.ch/issues/9646" target="_blank">9646</a> Set the dark current based on the total exposure time for each pixel taking into account the time between the end of the frame transfer and the pixel being read out. Add dark current also to blank and overscan reference columns and rows as appropriate
+  <li>FOV radius is now defined automatically rather than being user defined, depending on whether or not the image is full frame, and whether or not FrameTransferSmearer is switched on
+  <li><a href="https://redmine.isdc.unige.ch/issues/8692" target="_blank">8692</a> Output flat field truth data
+  <li><a href="https://redmine.isdc.unige.ch/issues/8682" target="_blank">8682</a> Output smearing truth information
+  <li><a href="https://redmine.isdc.unige.ch/issues/9875" target="_blank">9875</a> Add new housekeeping data: SCI_RAW_HkIaswPar, SCI_RAW_HkIbswDg, SCI_RAW_HkIbswPar
+  <li><a href="https://redmine.isdc.unige.ch/issues/8687" target="_blank">8687</a> Output the onboard centroid
+  <li>Use OBT class from common_sw to define the onboard time
+  <li><a href="https://redmine.isdc.unige.ch/issues/8689" target="_blank">8689</a> Option to only output images for which the payload in the loop (i.e. no Earth occultation)
+  <li>PITL (payload in the loop) flag now also stored for each point in the light curve (STATUS keyword) as well as in the metadata for each image
+  <li><a href="https://redmine.isdc.unige.ch/issues/9640" target="_blank">9640</a> automated assignment of program ID (unique for each user) and Observation request ID (incremented each time the user submits a job), used to define the name of the directory containing the output.
+  <li>It is now possible to run simulations in which StarProducer is run in order to define a pointing direction, but there is no target star (allows to run zodiacalLightGenerator with no stars in the FOV)
+  <li>It is now possible to run DataReduction with no target star: in this case the photometry aperture centre is defined as image centre
+</ul>
+
+<h4>Release 4.2</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Background stars located above the 200x200 subarray were not leaving frame transfer smear trails across the subarray
+  <li>Set missing keywords for incident light curve in the case that this is the only output
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/6928" target="_blank">6928</a>, <a href="https://redmine.isdc.unige.ch/issues/8681" target="_blank">8681</a> Add CCD margins:
+  <ul>
+    <li>Output new data structures for dark+blank+overscan rows/columns as extensions to the image FITS file
+    <li>Internal image class extended to include ref cols/rows
+    <li>Frame transfer smear trails extended to top dark and overscan rows
+    <li>Photon noise also applied to top dark and overscan rows (for smear trails)
+    <li>Hot pixels and dark current also for dark rows/columns
+    <li>Bias offset and readout noise also for dark+blank+overscan rows/columns
+    <li>Cosmics also in dark reference columns/rows
+    <li>New configurable parameters to set option to write CCD margins and whether or not to write them as images
+  </ul>
+  <li>Modified random seeds in BiasGenerator and PhotonNoiseGenerator to ensure all seeds are unique
+  <li>Images are now initialised in FocalPlaneGenerator instead of PSFGenerator, so that PSFGenerator is no longer compulsory (e.g. when there are no stars)
+  <li>FrameTransferSmearer now applied after FlatFieldGenerator so that smear trails have flat field according to the pixels where the light is incident
+  <li>ADC saturation is applied to all images before stacking and before integer rounding
+  <li><a href="https://redmine.isdc.unige.ch/issues/9295" target="_blank">9295</a> Divide by sqrt(N-1) instead of sqrt(N) in calculating standard deviations
+  <li><a href="https://redmine.isdc.unige.ch/issues/9295" target="_blank">9295</a> Ensure that number of pixels within the aperture is fixed
+  <li><a href="https://redmine.isdc.unige.ch/issues/9295" target="_blank">9295</a> Ensure that number of pixels within the background annulus is fixed
+  <li>Print global throughput to log file
+</ul>
+
+<h4>Release Candidate 4.2_rc1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/9295" target="_blank">9295</a> Bugfix: Second side of smear trail was not active when jitter is switched off
+  <li>Fix memory leak for case when StarProducer is off (no stars in FOV)
+  <li>Fix minor memory leak: stars outside the FOV or with mag&ltminMag were not being deleted
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/9295" target="_blank">9295</a> Incident light curve now stores no. of photons incident on telescope aperture during an exposure, instead of ergs/s/cm-2
+  <li><a href="https://redmine.isdc.unige.ch/issues/9298" target="_blank">9298</a> Provide option to output stacked images in double precision for validation purposes (default remains uint32)
+  <li><a href="https://redmine.isdc.unige.ch/issues/9298" target="_blank">9298</a> Use double rather than float for PSF in memory
+  <li><a href="https://redmine.isdc.unige.ch/issues/9300" target="_blank">9300</a> Perform integer rounding before stacking
+  <li><a href="https://redmine.isdc.unige.ch/issues/9298" target="_blank">9298</a> ADC saturation now handled in ImageWriter upon writing to the uint16/32 data structures - no longer optional/configurable
+  <li>Performance improvement: speed up initialisation by not reading flat field files for configurations in which the flat field will not be applied
+  <li>User feedback: indicate that background star positions in stdout are in arcseconds relative to the pointing direction
+  <li>User feedback: increase precision for mean extracted flux printed to stdout
+</ul>
+
+<h4>Release 4.1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/9055" target="_blank">9055</a> Fix fo flat field correction: Divide by the integral of blackbody*throughput*QE in the construction of the combined flat field to be used for the flat field correction so that these components are not part of the correction
+  <li><a href="https://redmine.isdc.unige.ch/issues/9187" target="_blank">9187</a> Fixes to allow configuration with no stars in the image (e.g. dark frame generation) 
+  <li>Fix to allow standalone writing of incident light curve in the DataReduction module when no images have been generated
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/9052" target="_blank">9052</a> Output housekeeping data: SCI_RAW_HkDefault, SCI_RAW_HkExtended, SCI_RAW_HkIaswDg, SCI_RAW_HkIfsw 
+  <li><a href="https://redmine.isdc.unige.ch/issues/8920" target="_blank">8920</a> Support for user upload of PSF files (tool to convert from ascii to the required FITS format is being prepared)
+  <li><a href="https://redmine.isdc.unige.ch/issues/9053" target="_blank">9053</a> Add missing keywords required to allow Archive ingestion for all output data types: PROC_CHAIN, TG_TYPE and OBS_MODE
+  <li><a href="https://redmine.isdc.unige.ch/issues/9186" target="_blank">9186</a> New default QE and throughput from Demetrio
+  <li>Set BJD (barycentric Julian date) to same value as MJD (modified Julian date) instead of zero in light curves (for now no calculation of BJD is available since there is no orbit model yet)
+</ul>
+
+<h4>Release 4.0</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Prevent possibility of negative flat field values when a large scale factor is applied
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/8710" target="_blank">8710</a> Migration from using wavelength binned images to using a combined flat field in which wavelength binned flat fields are weighted according to the spectrum of the target star, resulting in reduced run time. The combined FF is corrected for throughput and QE in the FlatFieldGenerator module: application of throughput moved from PSFGenerator to FlatFieldGenerator. New parameter in FlatFieldGenerator to switch on/off application of the combined flat field independently of the other parameters of the module.
+  <li><a href="https://redmine.isdc.unige.ch/issues/8711" target="_blank">8711</a> Option to perform flat field correction in DataReduction module. An error in the flat field correction can be modeled by assigning a black body effective temperature for the FF construction which differs from the target star Teff.
+  <li><a href="https://redmine.isdc.unige.ch/issues/8476" target="_blank">8476</a> Stellar spectral type selection in decimal format (G0, K4 etc); target star mass and radius assigned automatically according to spectral type rather than as independently defined user inputs in TransitFluxModulator
+  <li><a href="https://redmine.isdc.unige.ch/issues/8912" target="_blank">8912</a> Option to read telescope temperature time series from a file
+  <li><a href="https://redmine.isdc.unige.ch/issues/8075" target="_blank">8075</a> Frame transfer smear trails are now double sided
+  <li>Add switch for FOV rotation in OrbitSimulator to allow this to be switched on/off independently of temperature variation
+  <li><a href="https://redmine.isdc.unige.ch/issues/8680" target="_blank">8680</a> FITS header keywords updated for compatibility with common_sw r_3.3: ProgNum and TargNum renamed to ProgId and ObsId respectively; MpsVisit keyword changed from string to uint32_t; Cheopsid, Targname, PiName keywords added.
+</ul>
+
+<h4>Release 3.3.1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Last of 70 wavelength bins was not being included in the stellar flux calculation, resulting in a ~1% deficit (depending on stellar type) in the flux normalization w.r.t. the full 400nm-1100nm range. Affects only the absolute flux normalization, not the noise or relative transit depth.
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/8589" target="_blank">8589</a> Set value of MPS visit number Keyword (MPS_VSIT) to job ID. Currently a string. Will be changed to integer in next release, following a change to the relevant data structure in common_sw r_3.3. 
+</ul>
+
+<h4>Release 3.3</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Bugfix to smear trail brightness for non-oversampled case
+  <li>Protection against divide by zero in noise curve generation
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/8283" target="_blank">8283</a> QE and the flat field are now applied simply as multiplicative factors to the pixel flux, with the resultant flux used as the mean for the Poisson shot noise generation, following the binomial selection theorem: "Binomial selection of a Poisson process yields a Poisson process, and the mean of the output of the selection process is the mean of the input times the binomial probability of success". This replaces the generation of the shot noise before applying QE, subsequently treating QE as a binomial quantum process.
+  <li><a href="https://redmine.isdc.unige.ch/issues/8282" target="_blank">8282</a> For Gaussian flat field generation, use of a single wavelength independent Gaussian instead of separate Gaussians in each of 3 wavelength bands
+  <li><a href="https://redmine.isdc.unige.ch/issues/8379" target="_blank">8379</a>Add back SnapToGrid option for PSF positioning, thus providing three options for the positioning method: Oversampling, Interpolation, SnapToGrid. The method can be set independently for the target star and for background stars.
+  <li>More efficient code for PSF spatial oversampling, giving runtime improvement
+  <li>Database server for job management is now a configuration parameter that can be passed from the tomcat web application to ensure connection to the correct database
+</ul>
+
+<h4>Release 3.2</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Bugfix to vector size for PSF truth information (was resulting in Y position values not being stored correctly)
+  <li>Bugfix to image dimensions for case where there are no stars in the FOV
+  <li>Fix doxygen generation
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/8139" target="_blank">8139</a> Sub-pixel PSF positioning through interpolation instead of 10x spatial oversampling, giving factor ten improvement in CPU time. Oversampling method is retained as an option.
+  <li><a href="https://redmine.isdc.unige.ch/issues/8142" target="_blank">8142</a> Use of truth barycentre for imagette centre determination and for light curve extraction
+  <li><a href="https://redmine.isdc.unige.ch/issues/8137" target="_blank">8137</a> Support connection to database to update job status and runtime progress to allow job monitoring and cancellation (facility to be provided in a future release of the web interface (CHEOPSIM_web))
+  <li><a href="https://redmine.isdc.unige.ch/issues/8136" target="_blank">8136</a> Updates for compatibility with common_sw release r_3.2, including use of new FITS keywords for time formats (UTC, OBT, MJD and BJD)
+  <li>Change default value of transit impact parameter from 0.2 to 0
+</ul>
+
+<h4>Release 3.1.1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Reduce memory use during photometric extraction so that only one image is retained in memory at a time. This change fixes failures reported in release 3.1 due to insufficient memory, for jobs with more than around 600 stacked images.
+</ul>
+
+<h4>Release 3.1</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Bugfix in the number of images per cube for unstacked images for case of multiple output image cubes 
+  <li>For the case of multiple output image cubes for a given image type, if the configuration is such that the total number of images cannot be shared equally between the multiple cubes, the number of layers in the final cube is reduced accordingly rather than leaving empty layers
+  <li>Bugfix for start/end time header keywords for light curves for the case of multiple image cubes (in release 3.0 the keywords corresponded to the start/end times of the first image cube)
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li>Oversampling of background stars can now be controlled independently of oversampling for the target star, in order to improve runtime when many background stars are present. A new parameter is provided to switch on/off oversampling of background stars, together with two additional new parameters to define the maximum radius from the target star and minimum magnitude for which oversampling is applied to the background stars.
+</ul>
+
+<h4>Release 3.0</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/7269" target="_blank">7269</a> Bugfix in conversion from sexagesimal to decimal for RA (factor 15 was not included) 
+  <li>Fix x-axis scale for noise curve 
+  <li>Flux error in light curves set to zero (not currently defined) 
+</ul>
+
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/6927" target="_blank">6927</a> Output truth information for roll angle, jitter, PSF positions and incident fluxes, positions and number of electrons for pixels affected by cosmics, positions and number of electrons for hot pixels, positions and QE for bad pixels. This information is provided for full frame images, sub-array images (stacked and unstacked) as well as imagettes, using new data structures SIM_TRU_SubArray and SIM_TRU_FullArray.
+  <li><a href="https://redmine.isdc.unige.ch/issues/6748" target="_blank">6748</a> Generation of imagettes together with metadata for each exposure, with user configurable dimension, centred on the PSF barycentre, using new data structure SCI_RAW_Imagette 
+  <li><a href="https://redmine.isdc.unige.ch/issues/6748" target="_blank">6748</a> Generation of a full frame image for first exposure, with metadata
+  <li><a href="https://redmine.isdc.unige.ch/issues/6748" target="_blank">6748</a> Frame transfer smear trails now include trails from stars located outside the 200x200 sub-array
+  <li><a href="https://redmine.isdc.unige.ch/issues/7290" target="_blank">7290</a> Support user configurable limit on number of images per FITS image cube. If the specified limit is exceeded, additional files are generated, separately for stacked/unstacked/imagettes.
+  <li><a href="https://redmine.isdc.unige.ch/issues/7290" target="_blank">7290</a> Data type for pixel value in output image cubes is 16-bit unsigned integer for unstacked images, imagettes and full frame images, and 32-bit unsigned integer for stacked images.
+New data type SIM_RAW_UnstackedSubArray introduced due to stacked and unstacked sub-array images having different basic data types.
+  <li><a href="https://redmine.isdc.unige.ch/issues/7496" target="_blank">7496</a> Use of new data structures for flat field and PSFs: both are now input as data cubes. PSF data cubes have 21 layers corresponding to temperatures ranging from -15.0C to -5.0C in 0.5C steps. PSFs at temperatures intermediate between those provided by the instrument team are constructed by linear interpolation. 
+  <li><a href="https://redmine.isdc.unige.ch/issues/6755" target="_blank">6755</a> Support PSF of any dimension, allowing the possibility to define a uniform PSF for flat field generation
+  <li><a href="https://redmine.isdc.unige.ch/issues/6747" target="_blank">6747</a> Use of new data structures for throughput and QE: now input as FITS files rather than text files 
+  <li><a href="https://redmine.isdc.unige.ch/issues/6747" target="_blank">6747</a> Use of new nominal throughput provided by Demetrio Magrin (13/10/2014) with telescope area updated accordingly, since spider obscuration is already included in the throughput
+  <li><a href="https://redmine.isdc.unige.ch/issues/7664" target="_blank">7664</a> Support input of RA and declination values as degrees in decimals as well as sexagesimal 
+  <li><a href="https://redmine.isdc.unige.ch/issues/7286" target="_blank">7286</a> New flag added to image metadata to indicate whether or not the payload was in the loop (interruptions due to Earth occultation) at the time corresponding to the image. Updated data structure for the input jitter files in order to store the flag. 
+  <li><a href="https://redmine.isdc.unige.ch/issues/7540" target="_blank">7540</a> The period of sinusoidal temperature variations can now be defined by the user, in addition to the mean and amplitude
+  <li><a href="https://redmine.isdc.unige.ch/issues/7287" target="_blank">7287</a> Add option to scale the flat field deviations from the mean for an empirical flat field by a user defined factor 
+  <li><a href="https://redmine.isdc.unige.ch/issues/7288" target="_blank">7288</a> Add option to switch off background subtraction during light curve extraction
+  <li><a href="https://redmine.isdc.unige.ch/issues/7293" target="_blank">7293</a> Provide option to run photometric extraction only, starting from an already existing set of images generated by another CHEOPSim job
+  <li><a href="https://redmine.isdc.unige.ch/issues/7663" target="_blank">7663</a> Update filenames to latest agreed form: CH_PR99nnnn_TGnnnnnn_TUyyyy-mm-ddThh-mm-ss_DataStructureType_V000.fits. Output to a directory named CH_PR99nnnn_TGnnnnnn/ which contains subdirectories named data/, truth/, dfs/ and light_curves/
+  <li>Planet radius can now be input as a multiple of the radius of Neptune (previously only Jupiter and Earth)
+  <li>Improvement to memory usage: Store FITS data cube in memory and write image data to it at time intervals corresponding to each stacked image. Image objects are deleted from memory after writing them to the data cube. In order to support this, the ImageStacker module has been replaced with a new module called ImageWriter which writes out the image cubes as well as performing the stacking, and is executed within the loop over time steps. OutputModule, executed after the loop over time steps now only performs photometric extraction.
+</ul>
+
+<h4>Release 1.0</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Fixed a bug in the calculation of the PSF barycentre used for photometric extraction
+  <li>Fixed orientation of flat field (was upside down)
+  <li>Do not use binomial probability to convert number of photons to number of electrons in the case where flat field is applied but QE is not applied. In this case, the number of electrons in each pixel is now simply the number of photons multiplied by the flat field value for the pixel.
+  <li>Set BJD value to zero in fits output for image meta data and light curves (was previously undefined). Calculation of the value is planned for a future release.
+  <li>Set ProgType keyword to 98 for unstacked images and 99 for stacked images (instead of always 99), thus matching the file names.
+  <li>Fixed CCD temperature in image metadata for stacked images (was not corresponding to the correct time step for stacked images, although was correct for unstacked images)
+</ul>
+
+<h4>Release 1.0 Candidate 3</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li>Fix header filenames in includes for new data structures
+</ul>
+  
+<h5>New features:</h5>
+<ul>
+  <li>New keywords progNum, targNum, visitnum, visitId keywords for output images and light curves
+  <li>Update output filenames for images using the information from the above keywords, and including a timestamp in the format agreed with Hans-Gustav Floren
+</ul>
+
+<h4>Release 1.0 Candidate 2</h4>
+
+<h5>Bug fixes:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/6378" target="_blank">6378</a> JitterProducer: bug fix for length of jitter file (effect of bug was no jitter beyond 10 hours)
+  <li><a href="https://redmine.isdc.unige.ch/issues/6378" target="_blank">6378</a> StarProducer: bugfix in interpreting negative RA/dec values for pointing direction
+  <li>OutputModule: bug fix in defining noise curve x-axis 
+  <li>WavelengthCombiner: bug fix in deletion of images to smear when frame transfer smearing is turned off
+  <!--<li>FlatFieldGenerator: default qe file not read as percent-->
+</ul>
+  
+<h5>New features:</h5>
+<ul>
+  <li><a href="https://redmine.isdc.unige.ch/issues/6284" target="_blank">6284</a>Option to generate a synthetic background star field
+  <li><a href="https://redmine.isdc.unige.ch/issues/6225" target="_blank">6225</a>: Support for new data structures for all input and output data.  Addition of new module InputConverter to convert existing input data to the required formats.
+  <li>PSFs are now added to the image if centre is within the frame plus a 25 pixel margin so that a partial PSF within the frame is possible. Default FOV radius in configuration is now a circle enclosing 200x200 pixels plus a 25 pixel margin.
+  <li>Telescope area decreased from 767.93cm2 to 728cm2 to account for spider obscuration
+  <li>"Sequence" changed to "Visit" in output file naming
+</ul>
+
+<h3> Supported Platforms </h3>
+
+<p>
+The only supported platform is the <a href="https://svn.isdc.unige.ch/svn-cheops/01_management/documents/ecss/configuration_items/CHEOPS-UGE-SOC-CS-001_soc_configuration_items.xlsx" target="_blank">CHEOPS SOC Reference Platform</a> 
+</p>
+
+<b>OS</b>: CentOS 6.6<br />
+<b>Compiler</b>: gcc-c++ and devel 4.9.2
+
+<h3>Dependencies</h3>
+
+<b>3rd Party dependencies</b>
+<ul>
+<li>gcc-c++ and devel 4.9.2</li>
+<li>boost 1.55.0</li>
+<li>cfitsio and cfitsio-devel 3.340</li>
+<li>doxygen 1.8.9.1</li>
+<li>xerces-c 3.1.1</li>
+<li>xsd-3.3.0</li>
+<li>python 3.4</li>
+<li>Eigen 3.3.5-2</li>
+</ul>
+
+<b>Internal dependencies</b>
+<ul>
+<li><a href="https://svn.isdc.unige.ch/svn-cheops/05_infrastructure/software/common_sw/tags/r_13.1.4" target="_blank"> 
+Common Software (common_sw) release 13.1.4</a>
+</li>
+</ul>
+
+<h3> Implemented Requirements </h3>
+
+<table cellpadding="3" border ="1" cellspacing="0">
+ <tr> <th> ID </th> <th> Title </th> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-PRF-002 </td> <td> Version control </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-PRF-007 </td> <td> Modularity 1 </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-PRF-009 </td> <td> Modularity 3 </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-PRF-010 </td> <td> Speed of simulation </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-PRF-011 </td> <td> Platform </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-001 </td> <td> Output:  Images </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-002 </td> <td> Output:  Number of images </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-003 </td> <td> Output:  Header file </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-004 </td> <td> Interface: Mission planning tool </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-005 </td> <td> Interface: Data flow simulator </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-006 </td> <td> Interface: Data reduction software </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-007 </td> <td> Output persistency </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-010 </td> <td> Output:  Image cube size limit </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-011 </td> <td> Output:  Truth information </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-012 </td> <td> Output:  Imagettes </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-013 </td> <td> Output:  Full frame image </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-014 </td> <td> Photometric extraction </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-GNRL-FUN-016 </td> <td> Noise curve generation </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-001 </td> <td> Field of view </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-002 </td> <td> Input parameters:  User input </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-003 </td> <td> Catalogue 1 </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-005 </td> <td> Flux models </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-006 </td> <td> Field of view from sky coordinates </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-007 </td> <td> Field of view from sky coordinates:  User input </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-008 </td> <td> Field of view from target star </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-010 </td> <td> Synthetic field of view </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-011 </td> <td> Synthetic field of view:  User input </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-012 </td> <td> User option:  Transit flux component </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-013 </td> <td> Transit flux component:  User input </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-014 </td> <td> User option:  Input flux time series</td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-015 </td> <td> User option:  Flux variation component (background stars)</td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-016 </td> <td> Flux variation component:  User input </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-017 </td> <td> User option:  Flux noise component (background stars)</td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-018 </td> <td> Field of view extraction </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-019 </td> <td> Calculation of the stellar flux </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-020 </td> <td> Output </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SOURCE-FUN-021 </td> <td> Synthetic field of view:  Star coordinate format </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-001 </td> <td> Access to previous simulator data </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-002 </td> <td> User input parameter </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-003 </td> <td> Models (particle flux rate)</td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-004 </td> <td> Jitter model (random models)</td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-005 </td> <td> User option:  Observability for synthetic FOV  </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-011 </td> <td> User option:  Jitter model </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-012 </td> <td> User input:  Time resolution </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-013 </td> <td> Output (angles to sun/moon/earth, particle flux rate, SAA flag)</td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-014 </td> <td> Rotation of the field </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-TELESCOPE-FUN-001 </td> <td> Access to previous simulator data </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-TELESCOPE-FUN-002 </td> <td> Models (halo)</td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-TELESCOPE-FUN-003 </td> <td> User option:  PSF model </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-TELESCOPE-FUN-004 </td> <td> PSF model:  User input  </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-TELESCOPE-FUN-005 </td> <td> User option:  Halo simulation </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-TELESCOPE-FUN-006 </td> <td> PSF </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-TELESCOPE-FUN-007 </td> <td> Halo </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-TELESCOPE-FUN-008 </td> <td> Focal plane </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-TELESCOPE-FUN-009 </td> <td> Output </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-001 </td> <td> Access to previous simulator data </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-002 </td> <td> Input parameters with default values </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-003 </td> <td> User input parameter </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-004 </td> <td> Flux integration </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-005 </td> <td> Projection on the CCD plane </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-006 </td> <td> Shot noise </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-007 </td> <td> Models (gain vs temperature, CR/BP rate vs orbital phase)</td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-008 </td> <td> Flatfield model </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-009 </td> <td> User option:  Flatfield wavelength dependency </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-010 </td> <td> User option:  Smearing effect </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-011 </td> <td> Smearing effect:  User input </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-012 </td> <td> User option:  Thermal dependency </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-013 </td> <td> Output </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-014 </td> <td> User option:  Flag saturated images </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-DETECTOR-FUN-016 </td> <td> User option:  Flatfield scaling </td> </tr>
+</table>
+
+<h3> Not yet Implemented Requirements </h3>
+
+<table cellpadding="3" border ="1" cellspacing="0"> 
+ <tr> <th> ID </th> <th> Title </th> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-008 </td> <td> User option:  Particle flux threshold </td> </tr>
+ <tr> <td> CHEOPS-SOC-RS-CHEOPSIM-SATELLITE-FUN-009 </td> <td> Particle flux threshold:  User input </td> </tr>
+</table>
+
+</body>
+</html>

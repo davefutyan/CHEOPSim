@@ -1,0 +1,3 @@
+EXEC_TARGET1 = animation.py
+EXEC_TARGET2 = light_curves.py
+EXEC_VERSION1 = 0.1

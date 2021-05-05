@@ -1,0 +1,1297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_params xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="program_params_schema.xsd">
+
+<param>
+	<name>startTime</name>
+	<value>2018-09-01 12:00:00</value>
+	<help>Start date and time of the simulation (YYYY-MM-DD HH:MM:SS[.SSS])</help>
+</param>
+
+<param>
+	<name>numberOfStackedImages</name>
+	<value>100</value>
+	<type>int</type>
+	<help>Number of stacked images to produce.  Simulation duration is numberOfStackedImages*exposuresPerStack*exposureTime.</help>
+	<min>1</min>
+</param>
+
+<param>
+	<name>exposuresPerStack</name>
+	<value>3</value>
+	<type>int</type>
+	<help>Number of exposures per stack</help>
+	<min>1</min>
+	<max>60</max>
+</param>
+
+<param>
+	<name>exposureTime</name>
+	<value>60</value>
+	<type>double</type>
+	<help>Exposure time in seconds</help>
+	<min>0.</min>
+	<max>600.</max>
+</param>
+
+<param>
+	<name>maxImagesPerCube</name>
+	<value>2000</value>
+	<type>int</type>
+	<help>Maximum number of images per image cube</help>
+	<min>1</min>
+</param>
+
+<param>
+	<name>doFullFrame</name>
+	<value>true</value>
+	<type>bool</type>
+	<help>Set to true to output a fits file containing a full frame image corresponding to the first exposure of the simulation</help>
+</param>
+
+<param>
+	<name>pointingRA</name>
+	<value>00:00:00.0</value>
+	<help>Pointing direction Right Ascension in arcseconds</help>
+</param>
+
+<param>
+	<name>pointingDec</name>
+	<value>00:00:00.0</value>
+	<help>Pointing direction declination in arcseconds</help>
+</param>
+
+<param>
+	<name>obsId</name>
+	<value>-1</value>
+	<type>int</type>
+	<help>Observation ID</help>
+</param>
+
+<param>
+	<name>applyThroughput</name>
+	<value>true</value>
+	<type>bool</type>
+	<help>Switch off to set the optical throughput to 100% for the full wavelength range</help>
+</param>
+
+<param>
+	<name>throughputFilename</name>
+	<value>throughput_feb2016.fits</value>
+	<help>filename for telescope throughput vs wavelength, format: REF_APP_Throughput.fsd</help>
+</param>
+
+<param>
+	<name>applyQE</name>
+	<value>true</value>
+	<type>bool</type>
+	<help>Switch off to apply the flat field only without wavelength dependent quantum efficiency</help>
+</param>
+
+<param>
+	<name>QEFilename</name>
+	<value>qe_may2016.fits</value>
+	<help>filename for quantum efficiency vs wavelength, format: REF_APP_QE.fsd</help>
+</param>
+
+<param>
+	<name>SEDFilename</name>
+	<value></value>
+	<help>filename for SED reference file, format: REF_APP_SEDTeff.fsd</help>
+</param>
+
+<param>
+	<name>targetSEDFilename</name>
+	<value></value>
+	<help>filename for user provided SED fileto be used for the target star. Format: FITS table containing columns named WAVELENGHTH and FLUX. Units of WAVELENGTH must be Angstroms and the wavelength range must cover 3300-11000 Angstroms.</help>
+</param>
+
+<param>
+	<name>gainCorrectionFilename</name>
+	<value>CH_TU2018-01-01T00-00-00_REF_APP_GainCorrection_V0100.fits</value>
+	<help>Filename for the REF_APP_GainCorrection fits file containing the parameters for the gain correction formula as a function of bias voltage values</help>
+</param>
+
+<param>
+	<name>radius_barycentre</name>
+	<value>35.</value>
+	<type>double</type>
+	<help>Radius of circle centred on image centre used to determine PSF barycentre</help>
+</param>
+
+<param>
+	<name>radius_bkgInner</name>
+	<value>40.</value>
+	<type>double</type>
+	<help>Inner radius of annulus centred on PSF barycentre used to evaluate the background</help>
+</param>
+
+<param>
+	<name>radius_bkgOuter</name>
+	<value>60.</value>
+	<type>double</type>
+	<help>Outer radius of annulus centred on PSF barycentre used to evaluate the background</help>
+</param>
+
+<param>
+	<name>radius_psf</name>
+	<value>30.</value>
+	<type>double</type>
+	<help>Radius of circle centred on PSF barycentre used to extract the signal flux</help>
+</param>
+
+<param>
+	<name>subtractBackground</name>
+	<value>true</value>
+	<type>bool</type>
+	<help>Set to true to perform background subtraction during light curve extraction</help>
+</param>
+
+<param>
+	<name>updateDatabase</name>
+	<value>false</value>
+	<type>bool</type>
+	<help>Set to true to update the CHEOPSim job submission database</help>
+</param>
+
+<param>
+	<name>databaseServer</name>
+	<value>local</value>
+	<help>Name of server for CHEOPSim job submission database</help>
+</param>
+
+<param>
+	<name>modulesToRun</name>
+	<value>JitterProducer,OrbitSimulator</value>
+	<help>Comma separated list of modules to be run</help>
+</param>
+
+<module>
+  <name>StarProducer</name>
+
+  	<param>
+        <name>FOVradius</name>
+        <value>551</value>
+	    <type>double</type>
+        <help>Field of view radius in arcseconds</help>
+    </param>
+    
+    <param>
+        <name>minMagnitude</name>
+        <value>19</value>
+	    <type>double</type>
+        <help>Minimum magnitude for stars in the field of view</help>
+    </param>
+    
+    <param>
+        <name>targetMagnitude</name>
+        <value></value>
+        <help>Magnitude of target star in passband defined by gaiaBand parameter. If empty, the value is taken from the first row in starFilename, converting ot the appropriate passband as necessary.</help>
+    </param>
+    
+    <param>
+        <name>starFilename</name>
+        <value>onestar.txt</value>
+        <help>ascii file containing comma separated values for RA,dec,mag,specType for each star to be included</help>
+    </param>
+    
+	<param>
+		<name>gaiaBand</name>
+		<value>false</value>
+		<type>bool</type>
+		<help>Flag to indicate whether or not to use the Gaia band rather than the V-band for stellar flux normalization</help>
+	</param>
+    
+    <param>
+        <name>useTargetStarForPointing</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Flag to indicate whether or not to match the pointing direction to the target star</help>
+    </param>
+    
+    <param>
+        <name>doBackgroundStars</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Switch on to add a background star field</help>
+    </param>
+    
+    <param>
+        <name>fieldCrowding</name>
+        <value>medium</value>
+        <help>Background star field crowding (low, medium or extreme)</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>TransitFluxModulator_star0</name>
+
+    <param>
+        <name>firstTransitTime</name>
+        <value>0.5</value>
+	    <type>double</type>
+        <help>Time of midpoint of first transit as a fraction of the simulation duration</help>
+    </param>
+    
+  	<param>
+        <name>planetRadius</name>
+        <value>1.0</value>
+	    <type>double</type>
+        <help>Planet radius as a multiple of the radius of Jupiter/Neptune/Earth depending on planetScale</help>
+    </param>
+    
+  	<param>
+        <name>planetScale</name>
+        <value>Neptune</value>
+        <help>Planet for which planetRadius is a multiple of</help>
+    </param>
+    
+    <param>
+        <name>orbitPeriod</name>
+        <value>2.0</value>
+	    <type>double</type>
+        <help>Planet orbit period around the star in hours/days depending on orbitUnits</help>
+    </param>
+    
+    <param>
+        <name>orbitUnits</name>
+        <value>days</value>
+        <help>hours or days</help>
+    </param>
+    
+    <param>
+        <name>impactParameter</name>
+        <value>0.0</value>
+	    <type>double</type>
+        <help>Impact parameter for the transit (smallest distance from planet centre to star centre divided by star radius)</help>
+    </param>
+    
+    <param>
+        <name>doLimbDarkening</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to include limb darkening</help>
+    </param>
+    
+    <param>
+        <name>doModification</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Set to true to modify the transit curve according to resources/transitModification.txt</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>StellarVariationFluxModulator_star0</name>
+
+    <param>
+        <name>rotationPeriod</name>
+        <value>5.0</value>
+	    <type>double</type>
+        <help>Rotation period of the star in days</help>
+    </param>
+    
+    <param>
+        <name>stellarVariationSeed</name>
+        <value>1234</value>
+	    <type>int</type>
+        <help>Seed for random number generation</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>JitterProducer</name>
+
+    <param>
+        <name>jitterFilename</name>
+        <value>Case2_4RW_1s-May2015-CASA_notBlinded.fits</value>
+        <help>filename for jitter, format: REF_APP_Jitter.fsd</help>
+    </param>
+    
+    <param>
+        <name>jitterFileOffset</name>
+        <value>0.</value>
+	    <type>double</type>
+        <help>Number of seconds to omit from the start of the uploaded jitter file</help>
+    </param>
+    
+    <param>
+        <name>jitterScale</name>
+        <value>1.0</value>
+	    <type>double</type>
+        <help>Scale factor applied to jitter RMS.  RMS for default jitter file is 2.96015</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>OrbitSimulator</name>
+
+    <param>
+        <name>ccdTemperatureVariation</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to apply CCD temperature variation</help>
+    </param>
+    
+    <param>
+        <name>ccdMeanTemperature</name>
+        <value>233</value>
+	    <type>double</type>
+        <help>CCD mean temperature in Kelvin</help>
+    </param>
+    
+    <param>
+        <name>ccdTemperatureAmplitude</name>
+        <value>0.01</value>
+	    <type>double</type>
+        <help>Amplitude of sinusoidal variation of CCD temperature in Kelvin</help>
+    </param>
+    
+    <param>
+        <name>ccdTemperaturePeriod</name>
+        <value>97.5</value>
+	    <type>double</type>
+        <help>Period of sinusoidal variation of CCD temperature in minutes</help>
+    </param>
+    
+    <param>
+        <name>feeTemperatureVariation</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to apply FEE temperature variation</help>
+    </param>
+    
+    <param>
+        <name>feeMeanTemperature</name>
+        <value>233</value>
+	    <type>double</type>
+        <help>FEE mean temperature in Kelvin</help>
+    </param>
+    
+    <param>
+        <name>feeTemperatureAmplitude</name>
+        <value>0.005</value>
+	    <type>double</type>
+        <help>Amplitude of sinusoidal variation of FEE temperature in Kelvin</help>
+    </param>
+    
+    <param>
+        <name>feeTemperaturePeriod</name>
+        <value>6</value>
+	    <type>double</type>
+        <help>Period of sinusoidal variation of FEE temperature in minutes</help>
+    </param>
+    
+    <param>
+        <name>telescopeTemperatureVariation</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to apply telescope temperature variation</help>
+    </param>
+    
+    <param>
+        <name>telescopeMeanTemperature</name>
+        <value>263</value>
+	    <type>double</type>
+        <help>telescope mean temperature in Kelvin</help>
+    </param>
+    
+    <param>
+        <name>telescopeTemperatureAmplitude</name>
+        <value>5</value>
+	    <type>double</type>
+        <help>Amplitude of sinusoidal variation of telescope temperature in Kelvin</help>
+    </param>
+    
+    <param>
+        <name>telescopeTemperaturePeriod</name>
+        <value>97.5</value>
+	    <type>double</type>
+        <help>Period of sinusoidal variation of telescope temperature in minutes</help>
+    </param>
+    
+    <param>
+        <name>telescopeTemperatureFromFile</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to read the telescope temperature vs time from a file</help>
+    </param>
+    
+    <param>
+        <name>telescopeTemperatureFilename</name>
+        <value>temperature_telescope.fits</value>
+        <help>Filename for telescope temperature vs time, format: REF_APP_Temperature.fsd</help>
+    </param>
+    
+    <param>
+        <name>rotateFOV</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to uniformly rotate the FOV once for each orbit period</help>
+    </param>
+    
+    <param>
+        <name>orbitFilename</name>
+        <value>CHEOPS-ESOC-TRA-016_700km_6am.fits</value>
+        <help>Filename for orbit position vs time, format: AUX_RES_Orbit.fsd</help>
+    </param>
+    
+    <param>
+        <name>minAngleToOrbitalPlane</name>
+        <value>10</value>
+	    <type>double</type>
+        <help>Minimum angle (degrees) between pointing direction and orbital plane for roll angle calculation</help>
+    </param>
+    
+    <param>
+        <name>attitudeCadence</name>
+        <value>1</value>
+	    <type>int</type>
+        <help>Cadence in seconds for writing out spacecraft attitude data to SCI_RAW_Attitude data structure</help>
+    </param>
+    
+    <param>
+        <name>orbitCadence</name>
+        <value>5</value>
+	    <type>int</type>
+        <help>Cadence in minutes for writing out spacecraft orbit data to AUX_RES_Orbit data structure</help>
+    </param>
+    
+    <param>
+        <name>SAAMapFilename</name>
+        <value>CH_TU2016-01-01T00-00-00_EXT_APP_SAAMap-700km_V0100.fits</value>
+        <help>Filename for FITS file containing the SAA map</help>
+    </param>
+    
+    <param>
+        <name>saaFlagFromVisitConstraints</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Flag to indicate whether to read the SAA flags, stray light flags and Earth occultation flags from MPS_PRE_VisitConstraints rather than calculating it from the orbit file</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>FocalPlaneGenerator</name>
+
+    <param>
+        <name>subArrayXDim</name>
+        <value>200</value>
+	    <type>int</type>
+        <help>Number of pixels in X dimension of image sub-array</help>
+    </param>
+    
+    <param>
+        <name>subArrayYDim</name>
+        <value>200</value>
+	    <type>int</type>
+        <help>Number of pixels in Y dimension of image sub-array</help>
+    </param>
+    
+    <param>
+        <name>subArrayXOffset</name>
+        <value>412</value>
+	    <type>int</type>
+        <help>Offset of first pixel of image sub-array in X dimension w.r.t. CCD edge</help>
+    </param>
+    
+    <param>
+        <name>subArrayYOffset</name>
+        <value>412</value>
+	    <type>int</type>
+        <help>Offset of first pixel of image sub-array in Y dimension w.r.t. CCD edge</help>
+    </param>
+    
+    <param>
+        <name>targetLocationX</name>
+        <value>512.0</value>
+	    <type>double</type>
+        <help>Location of centre of FOV rotation in X dimension w.r.t. CCD edge</help>
+    </param>
+    
+    <param>
+        <name>targetLocationY</name>
+        <value>512.0</value>
+	    <type>double</type>
+        <help>Location of centre of FOV rotation in Y dimension w.r.t. CCD edge</help>
+    </param>
+    
+    <param>
+        <name>targetLocationListX</name>
+        <value>null</value>
+        <help>Comma separated list of target location x coordinates, with one entry per exposure, intended for MandC data</help>
+    </param>
+    
+    <param>
+        <name>targetLocationListY</name>
+        <value>null</value>
+        <help>Comma separated list of target location y coordinates, with one entry per exposure, intended for MandC data</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>StrayLightGenerator</name>
+
+    <param>
+        <name>strayLightFile</name>
+        <value>sl_timeseries_6am_SSO650km_medium.fits</value>
+        <help>Filename for stray light</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>HaloGenerator</name>
+
+    <param>
+        <name>doGhosts</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Flag to indicate whether or not to include flux due to ghosts</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>PSFGenerator</name>
+
+    <param>
+        <name>PSF_filename</name>
+        <value>PSF_Field1_def0.000mm_W_330_1100nm_Dwave5nm_radius12px_nominal.fits</value>
+        <help>Filename for fits file used to define the PSF, format: REF_APP_(Oversampled)(White|Coloured)PSF.fsd with meatadata REF_APP_(Oversampled)(White|Coloured)PSFMetadata.fsd</help>
+    </param>
+    
+    <param>
+        <name>monochromaticPSF</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Set to true to use a monochromatic (wavelength binned) PSF</help>
+    </param>
+    
+    <param>
+        <name>monochromaticPSFwavelength</name>
+        <value>0</value>
+	    <type>int</type>
+        <help>Wavelength for monochromatic PSF. Set to 0 for combination over all wavelengths.</help>
+    </param>
+    
+    <param>
+        <name>thermalMap</name>
+        <value>fixed</value>
+        <help>Specify the termal map for the PSF: fixed, cold, hot1, hot2 or breathing</help>
+    </param>
+    
+    <param>
+        <name>oversampleJitter</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to perform time oversampling of PSF position according to jitter and field of view rotation</help>
+    </param>
+    
+    <param>
+        <name>targetStarPositioning</name>
+        <value>Interpolation</value>
+        <help>Method for positioning the target star PSF onto the pixel grid: Oversampling, Interpolation, or SnapToGrid</help>
+    </param>
+    
+    <param>
+        <name>backgroundStarPositioning</name>
+        <value>Interpolation</value>
+        <help>Method for positioning background star PSFs onto the pixel grid: Oversampling, Interpolation, or SnapToGrid</help>
+    </param>
+    
+    <param>
+        <name>convertFluxToPhotons</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Switch off to perform a closure test that the input flux is recovered in the extracted light curve</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>FlatFieldGenerator</name>
+
+    <param>
+        <name>applyFlatField</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to apply a flat field</help>
+    </param>
+    
+    <param>
+        <name>gaussianFlatField</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Set to false to read empirical flat fields. Set to true to define flat fields according to a Gaussian.</help>
+    </param>
+    
+    <param>
+        <name>flatFieldSeed</name>
+        <value>3456</value>
+	    <type>int</type>
+        <help>Random number generator seed for Gaussian flat field</help>
+    </param>
+    
+    <param>
+        <name>flatFieldFilename</name>
+        <value>flat_field_FM2_Sep2015.fits</value>
+        <help>filename for fits file used to define the flat field, format: REF_APP_FlatField.fsd with meatadata REF_APP_FlatFieldMetadata.fsd</help>
+    </param>
+    
+    <param>
+        <name>flatFieldScaleFactor</name>
+        <value>1.0</value>
+	    <type>double</type>
+        <help>Scale factor to apply to deviations from the mean for empirical flat field</help>
+    </param>
+    
+    <param>
+        <name>flatFieldSigma</name>
+        <value>0.001</value>
+	    <type>double</type>
+        <help>Standard deviation of the Gaussian distribution used to simulate the flat field</help>
+    </param>
+    
+    <param>
+        <name>flatFieldToSubtractTeff</name>
+        <value>5000.</value>
+	    <type>double</type>
+        <help>Black body effective temperature to define the spectral distribution of the flat field to be used in flat field correction</help>
+    </param>
+    
+    <param>
+        <name>flatFieldToSubtractSigma</name>
+        <value>0.0005</value>
+	    <type>double</type>
+        <help>Standard deviation of the Gaussian distribution used to smear the flat field to be used in flat field correction</help>
+    </param>
+    
+    <param>
+        <name>doDeadPixels</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Simulate dead pixels</help>
+    </param>
+    
+    <param>
+        <name>deadPixelPositionSeed</name>
+        <value>2345</value>
+	    <type>int</type>
+        <help>Seed for random number generation for dead pixel positions</help>
+    </param>
+    
+    <param>
+        <name>fracDeadPixels</name>
+        <value>0.0005</value>
+	    <type>double</type>
+        <help>Fraction of pixels which are dead</help>
+    </param>
+    
+    <param>
+        <name>deadPixelRelativeQE</name>
+        <value>0.5</value>
+	    <type>double</type>
+        <help>Factor by which quantum efficiency is reduced for dead pixels</help>
+    </param>
+    
+    <param>
+        <name>writeTruthFlatField</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits file containing the truth flat field</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>DarkCurrentGenerator</name>
+
+    <param>
+        <name>empiricalDarkFrame</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to false to define the expected dark current in each pixel based on an empirical dark frame rather than a fixed value for all pixels</help>
+    </param>
+    
+    <param>
+        <name>darkFrameFilename</name>
+        <value>darkFrame_FM1_leftAmplifier.fits</value>
+        <help>Filename for fits file used to define the empirical dark frame, format: REF_APP_DarkFrame.fsd</help>
+    </param>
+    
+    <param>
+        <name>darkFrameScaleFactor</name>
+        <value>1.0</value>
+	    <type>double</type>
+        <help>Scale factor to apply to the empirical dark frame</help>
+    </param>
+    
+    <param>
+        <name>meanDarkCurrent233K</name>
+        <value>0.01</value>
+	    <type>double</type>
+        <help>Mean dark current at 233K in electrons/second/pixel</help>
+    </param>
+    
+    <param>
+        <name>includeReadoutTime</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Flag to indicate whether or not to include readout time as well as exposure time for dark current accumulation</help>
+    </param>
+    
+    <param>
+        <name>rowDownShiftTime</name>
+        <value>35.0</value>
+	    <type>double</type>
+        <help>Time to shift down one row during readount in microseconds</help>
+    </param>
+    
+    <param>
+        <name>serialReadRate</name>
+        <value>240.0</value>
+	    <type>double</type>
+        <help>Serial read rate in kHz</help>
+    </param>
+    
+    <param>
+        <name>doHotPixels</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Randomly generate hot pixels</help>
+    </param>
+    
+    <param>
+        <name>hotPixelPositionSeed</name>
+        <value>5432</value>
+	    <type>int</type>
+        <help>Seed for random number generation for hot, warm and telegraphic pixel positions</help>
+    </param>
+    
+    <param>
+        <name>fracHotPixels</name>
+        <value>0.000125</value>
+	    <type>double</type>
+        <help>Fraction of pixels which are hot</help>
+    </param>
+    
+    <param>
+        <name>hotPixelRelativeDarkCurrent</name>
+        <value>500</value>
+	    <type>double</type>
+        <help>Factor by which dark current is increased for hot pixels</help>
+    </param>
+    
+    <param>
+        <name>doWarmPixels</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Randomly generate warm pixels</help>
+    </param>
+    
+    <param>
+        <name>fracWarmPixels</name>
+        <value>0.000125</value>
+	    <type>double</type>
+        <help>Fraction of pixels which are warm</help>
+    </param>
+    
+    <param>
+        <name>warmPixelRelativeDarkCurrent</name>
+        <value>200</value>
+	    <type>double</type>
+        <help>Factor by which dark current is increased for warm pixels</help>
+    </param>
+    
+    <param>
+        <name>doTelegraphicPixels</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Randomly generate telegraphic pixels</help>
+    </param>
+    
+    <param>
+        <name>fracTelegraphicPixels</name>
+        <value>0.000125</value>
+	    <type>double</type>
+        <help>Fraction of pixels which are telegraphic for the case of random position generation</help>
+    </param>
+    
+    <param>
+        <name>telegraphicPixelRelativeDarkCurrent</name>
+        <value>500</value>
+	    <type>double</type>
+        <help>Factor by which dark current is increased for telegraphic pixels when in their active state</help>
+    </param>
+    
+    <param>
+        <name>telegraphicTimeConstant</name>
+        <value>540</value>
+	    <type>double</type>
+        <help>Time constant for telegraphic pixel transitions in seconds</help>
+    </param>
+    
+    <param>
+        <name>telegraphicTransitionSeed</name>
+        <value>6543</value>
+	    <type>int</type>
+        <help>Seed for random number generation for telegraphic pixel transitions</help>
+    </param>
+    
+    <param>
+        <name>doManualHotPixels</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Set to true to define hot/warm/telegraphic pixels manually</help>
+    </param>
+    
+    <param>
+        <name>manualHotPixelX</name>
+        <value>100</value>
+        <help>Comma separated list of manually defined hot/warm/telegraphic pixel x positions</help>
+    </param>
+    
+    <param>
+        <name>manualHotPixelY</name>
+        <value>100</value>
+        <help>Comma separated list of manually defined hot/warm/telegraphic pixel y positions</help>
+    </param>
+    
+    <param>
+        <name>manualHotPixelRate</name>
+        <value>5.</value>
+        <help>Comma separated list of dark current rates at 233K for manually defined hot/warm/telegraphic pixels, in electrons/s/pixel</help>
+    </param>
+    
+    <param>
+        <name>manualHotPixelIsTelegraphic</name>
+        <value>F</value>
+        <help>Comma separated list of flags for manually defined hot/warm/telegraphic pixels, to indicate if they are telegraphic (T) or not (F)</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>FrameTransferSmearer</name>
+
+    <param>
+        <name>transferClockPeriod</name>
+        <value>10.0</value>
+	    <type>double</type>
+        <help>Frame transfer clock period in microseconds</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>PhotonNoiseGenerator</name>
+
+    <param>
+        <name>photonNoiseSeed</name>
+        <value>4567</value>
+	    <type>int</type>
+        <help>Random number generator seed for Poisson photon noise</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>CosmicRayGenerator</name>
+
+    <param>
+        <name>meanCosmicsPerMinute</name>
+        <value>10.8</value>
+	    <type>double</type>
+        <help>Mean number of cosmic rays per minute on 200x200 pixels</help>
+    </param>
+    
+    <param>
+        <name>SAAFluxFactor</name>
+        <value>100.</value>
+	    <type>double</type>
+        <help>Factor by which the cosmic ray flux rate increases within the SAA</help>
+    </param>
+    
+    <param>
+        <name>cosmicSeed</name>
+        <value>6789</value>
+	    <type>int</type>
+        <help>Seed for random number generation</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>FullWellSimulator</name>
+
+    <param>
+        <name>fullWellCapacity</name>
+        <value>127000</value>
+	    <type>int</type>
+        <help>Maximum number of electrons that can be held in a pixel</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>ChargeTransferSimulator</name>
+
+    <param>
+        <name>endOfLife</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Boolean to indicate whether or not to model end of life trails</help>
+    </param>
+    
+    <param>
+        <name>cte_vertical</name>
+        <value>99.9999</value>
+	    <type>double</type>
+        <help>Vertical charge transfer efficiency (%)</help>
+    </param>
+    
+    <param>
+        <name>cte_horizontal</name>
+        <value>99.9993</value>
+	    <type>double</type>
+        <help>Horizontal charge transfer efficiency (%)</help>
+    </param>
+    
+    <param>
+        <name>cti_trailLength</name>
+        <value>100.</value>
+	    <type>double</type>
+        <help>Exponential decay constant for CTI trails</help>
+    </param>
+    
+    <param>
+        <name>cti_trailFraction</name>
+        <value>0.028</value>
+	    <type>double</type>
+        <help>Fraction of intensity transferred to CTI tails for an intensity of 10000 electrons</help>
+    </param>
+    
+    <param>
+        <name>cti_intensityScaling</name>
+        <value>-0.65</value>
+	    <type>double</type>
+        <help>Scaling exponent for fraction of intensity transferred to CTI tails as a function of intensity</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>BiasGenerator</name>
+
+    <param>
+        <name>gain</name>
+        <value>0.439</value>
+	    <type>double</type>
+        <help>Electronic gain of the CCD in ADU/electron</help>
+    </param>
+    
+    <param>
+        <name>gainVsTempGradient</name>
+        <value>-0.96</value>
+        <type>double</type>
+        <help>Slope of the variation of electronic gain of the CCD vs temperature in ppm/mK</help>
+    </param>
+    
+    <param>
+        <name>doGainNonLinearity</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Boolean to indicate whether or not to include gain non-linearity</help>
+    </param>
+    
+    <param>
+        <name>gainNonlinearityCoeff1</name>
+        <value>3.9593e-12</value>
+	    <type>double</type>
+        <help>Gain non-linearity coefficient 1</help>
+    </param>
+    
+    <param>
+        <name>gainNonlinearityCoeff2</name>
+        <value>2.4585e-07</value>
+	    <type>double</type>
+        <help>Gain non-linearity coefficient 2</help>
+    </param>
+    
+    <param>
+        <name>gainNonlinearityCoeff3</name>
+        <value>0.9807</value>
+	    <type>double</type>
+        <help>Gain non-linearity coefficient 3</help>
+    </param>
+    
+    <param>
+        <name>biasMean</name>
+        <value>1753.5</value>
+	    <type>double</type>
+        <help>Mean of Gaussian used to simulate the bias frame</help>
+    </param>
+    
+    <param>
+        <name>biasWidth</name>
+        <value>4.027</value>
+	    <type>double</type>
+        <help>Width of Gaussian used to simulate the bias frame</help>
+    </param>
+    
+    <param>
+        <name>biasNoiseSeed</name>
+        <value>5678</value>
+	    <type>int</type>
+        <help>Random number generator seed for Gaussian bias noise</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>ImageWriter</name>
+
+    <param>
+        <name>writeUnstackedImages</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output fits files containing unstacked images</help>
+    </param>
+    
+    <param>
+        <name>writeStackedImages</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output fits files containing stacked images</help>
+    </param>
+    
+    <param>
+        <name>doublePrecisionStackedImages</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Set to true to output stacked image pixel values as double precision rather than uint32</help>
+    </param>
+    
+    <param>
+        <name>writeCcdMargins</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output dark, blank and overscan rows and columns</help>
+    </param>
+    
+    <param>
+        <name>ccdMarginImages</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output dark, blank and overscan rows and columns as 2D images rather than collapsed 1D rows and columns</help>
+    </param>
+    
+    <param>
+        <name>writeImagettes</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits file containing small images for each exposure centred on the PSF barycentre</help>
+    </param>
+    
+    <param>
+        <name>writeCentroid</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits file containing the onboard calculated centroid (mean PSF truth position) for each exposure</help>
+    </param>
+    
+    <param>
+        <name>writeStackedTruthData</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits file containing truth information for each stacked image</help>
+    </param>
+    
+    <param>
+        <name>writeUnstackedTruthData</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits file containing truth information for each unstacked image</help>
+    </param>
+    
+    <param>
+        <name>writeImagetteTruthData</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits file containing truth information for each imagette</help>
+    </param>
+    
+    <param>
+        <name>writeFullFrameTruthData</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits file containing truth information for the full frame image (if generated)</help>
+    </param>
+    
+    <param>
+        <name>imagetteSize</name>
+        <value>30</value>
+	    <type>int</type>
+        <help>Size of imagette in number of pixels along each side of a square</help>
+    </param>
+    
+    <param>
+        <name>writeHKData</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits file containing housekeeping data</help>
+    </param>
+    
+    <param>
+        <name>hkCadence</name>
+        <value>20</value>
+	    <type>int</type>
+        <help>Cadence for housekeeping data in seconds</help>
+    </param>
+    
+    <param>
+        <name>payloadInLoopOnly</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Set to true to only output images for which the payload is in the loop</help>
+    </param>
+    
+    <param>
+        <name>truthBarycentre</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to use the truth barycentre rather than calculating the barycentre through photometry on the final image</help>
+    </param>
+    
+    <param>
+        <name>radius_barycentre</name>
+        <value>35.</value>
+	    <type>double</type>
+        <help>Radius of circle centred on image centre used to determine PSF barycentre</help>
+    </param>
+    
+    <param>
+        <name>radius_bkgInner</name>
+        <value>40.</value>
+	    <type>double</type>
+        <help>Inner radius of annulus centred on image centre used to evaluate the background</help>
+    </param>
+    
+    <param>
+        <name>radius_bkgOuter</name>
+        <value>60.</value>
+	    <type>double</type>
+        <help>Outer radius of annulus centred on image centre used to evaluate the background</help>
+    </param>
+    
+    <param>
+        <name>ceCounterOffset</name>
+        <value>0</value>
+	    <type>int</type>
+        <help>Initial offset to the CE counter, intended for Dark Frame MandC data, for which CE counter increments through consecutive visits</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>HKWriter</name>
+    
+    <param>
+        <name>sdsCounterOffset</name>
+        <value>0</value>
+	    <type>int</type>
+        <help>Initial offset to the SDS counter, intended for Dark Frame MandC data, for which SDS counter increments through consecutive visits</help>
+    </param>
+    
+</module>
+
+<module>
+  <name>DataReduction</name>
+
+    <param>
+        <name>writeIncidentLightCurve</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits file containing the intrinsic flux time series of the target star</help>
+    </param>
+    
+    <param>
+        <name>imageDirectory</name>
+        <value>null</value>
+        <help>Full path of directory containing stacked images (optional)</help>
+    </param>
+    
+    <param>
+        <name>extractLightCurve</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits file containing the extracted light curve</help>
+    </param>
+    
+    <param>
+        <name>generateNoiseCurve</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to output a fits table containing the standard deviation of the light curve as a function of the binning in time</help>
+    </param>
+    
+    <param>
+        <name>truthBarycentre</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to use the truth barycentre rather than calculating the barycentre through photometry on the final image</help>
+    </param>
+    
+    <param>
+        <name>radius_barycentre</name>
+        <value>35.</value>
+	    <type>double</type>
+        <help>Radius of circle centred on image centre used to determine PSF barycentre</help>
+    </param>
+    
+    <param>
+        <name>radius_bkgInner</name>
+        <value>40.</value>
+	    <type>double</type>
+        <help>Inner radius of annulus centred on PSF barycentre used to evaluate the background</help>
+    </param>
+    
+    <param>
+        <name>radius_bkgOuter</name>
+        <value>60.</value>
+	    <type>double</type>
+        <help>Outer radius of annulus centred on PSF barycentre used to evaluate the background</help>
+    </param>
+    
+    <param>
+        <name>radius_psf</name>
+        <value>30.</value>
+	    <type>double</type>
+        <help>Radius of circle centred on PSF barycentre used to extract the signal flux</help>
+    </param>
+    
+    <param>
+        <name>subtractBackground</name>
+        <value>true</value>
+	    <type>bool</type>
+        <help>Set to true to perform background subtraction during light curve extraction</help>
+    </param>
+    
+    <param>
+        <name>subtractFlatField</name>
+        <value>false</value>
+	    <type>bool</type>
+        <help>Set to true to perform flat field correction during light curve extraction</help>
+    </param>
+    
+</module>
+
+</program_params>

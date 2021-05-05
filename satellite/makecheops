@@ -1,0 +1,4 @@
+LIB_TARGET1 = satellite
+LIB_OBJECT1 = JitterProducer.o OrbitSimulator.o
+CXX_CFLAGS += -I../
+COMPONENT_LIBS += -L../data/lib/ -ldata

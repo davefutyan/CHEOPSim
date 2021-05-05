@@ -1,0 +1,9 @@
+CXX_UNIT_TESTS += TestSource
+CXX_UNIT_TESTS += TestStrayLight
+
+PYTHON_COVERAGE += source
+
+UNIT_TESTS_VERSION = 5.0
+
+INCLUDES += -I../../../
+COMPONENT_LIBS += -L${CHEOPS_SW}/lib/ -ldata -lsource -ltelescope -lsatellite
