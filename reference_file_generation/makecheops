@@ -1,8 +1,0 @@
-EXEC_TARGET1 = runFluxConversion
-EXEC_OBJECT1 = runFluxConversion.o
-EXEC_TARGET2 = runReferenceFileConversion
-EXEC_OBJECT2 = ReferenceFileConverter.o runReferenceFileConversion.o
-
-CXX_CFLAGS += -I../
-COMPONENT_LIBS += -L../data/lib/ -ldata -L../source/lib/ -lsource
-EXEC_VERSION1 = 0.1
