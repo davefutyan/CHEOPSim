@@ -18,7 +18,15 @@ The following python packages are also required:
 
 <h3>Installation</h3>
 
-With the above dependencies installed, CHEOPSim can be installed as follows:
+The environment first needs to be set up as described in [README.md](https://github.com/davefutyan/common_sw#readme). The following updates to EXT_INC_DIRS, EXT_LIB_DIRS and LD_LIBRARY_PATH are additionally required to install and run CHEOPSim:
+
+    EXT_INC_DIRS+=" -I${LIBPQXX_PATH}/include -I${EIGEN_PATH} -I${GSL_PATH}"
+    EXT_LIB_DIRS+=" -L${LIBPQXX_PATH}/lib -L${LIBGSL_PATH}/li"
+    export LD_LIBRARY_PATH=${LIBPQXX_PATH}/lib:${LIBGSL_PATH}/lib:${LD_LIBRARY_PATH}"
+
+where LIBPQXX_PATH, EIGEN_PATH and GSL_PATH are the paths to the installations of pqxx, eigen and gsl, repsectively.
+
+CHEOPSim can now be installed as follows:
 
 * cd CHEOPSim
 * make install
