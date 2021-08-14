@@ -8,7 +8,7 @@ See the [README.md](https://github.com/davefutyan/common_sw#readme) for that rep
 
 In addition to [common_sw](https://github.com/davefutyan/common_sw) and its dependencies, the CHEOPSim package requires the following:
 
-* Gnu Scientific Library: http://www.gnu.org/software/gsl/
+* Gnu Scientific Library (GSL): http://www.gnu.org/software/gsl/
 * C++ client API for PostgreSQL: http://pqxx.org/development/libpqxx/ (CHEOPS deployment uses version 4.0.1)
 * Eigen C++ template library for linear algebra: https://eigen.tuxfamily.org/ (CHEOPS deployment uses version 3.3.4)
 
@@ -18,18 +18,18 @@ The following python packages are also required:
 
 <h3>Installation</h3>
 
-The environment first needs to be set up as described in [README.md](https://github.com/davefutyan/common_sw#readme). The following updates to EXT_INC_DIRS, EXT_LIB_DIRS and LD_LIBRARY_PATH are additionally required to install and run CHEOPSim:
+The environment first needs to be set up as described in [README.md](https://github.com/davefutyan/common_sw#readme). In addition, CHEOPSim requires the following environment variable to be set:
 
-    EXT_INC_DIRS+=" -I${LIBPQXX_PATH}/include -I${EIGEN_PATH} -I${GSL_PATH}"
-    EXT_LIB_DIRS+=" -L${LIBPQXX_PATH}/lib -L${LIBGSL_PATH}/li"
-    export LD_LIBRARY_PATH=${LIBPQXX_PATH}/lib:${LIBGSL_PATH}/lib:${LD_LIBRARY_PATH}"
+    export CHEOPS_TESTDATA=${CHEOPS_SW}
 
-where LIBPQXX_PATH, EIGEN_PATH and GSL_PATH are the paths to the installations of pqxx, eigen and gsl, repsectively.
+The following updates are also required for the environment:
+* Add include paths for GSL, pqxx and Eigen to the EXT_INC_DIRS environment variable
+* Add library paths for GSL and pqxx to the EXT_LIB_DIRS and LD_LIBRARY_PATH environment variables
 
 CHEOPSim can now be installed as follows:
 
-* cd CHEOPSim
-* make install
+    cd CHEOPSim
+    make install
 
 <h3>Execution</h3>
 
@@ -43,7 +43,7 @@ The parameters of the configuration are documented in the [CHEOPSim user guide](
 
 CHEOPSim can be run as follows:
 
-* cd CHEOPSim/simulator
-* runCHEOPSim
+    cd CHEOPSim/simulator
+    runCHEOPSim
 
 The runCHEOPSim command can be run from the CHEOPSim/simulator directory (as above) in which case, the configuration defined in CHEOPSim/simulator/conf/runCHEOPSim.xml will be used, or it can be executed from any directory containing a configuration file named runCHEOPSim.xml
