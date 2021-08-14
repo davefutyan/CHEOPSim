@@ -40,7 +40,7 @@ CHEOPSim can now be installed as follows:
 
 CHEOPSim requires a set of reference files as input. A default set of reference files are provided in the tarball [reference_data.tar.gz](https://github.com/davefutyan/CHEOPSim/releases/download/v1.0/reference_data.tar.gz) provided with the release of this package.
 
-The contents of this tarball need to be moved to ${CHEOPS_SW}/install
+The contents of this tarball need to be moved to ${CHEOPS_SW}/install/resources
 
 The configuration of the simulator is defined in CHEOPSim/simulator/conf/runCHEOPSim.xml
 
