@@ -12,20 +12,25 @@ In addition to [common_sw](https://github.com/davefutyan/common_sw) and its depe
 * C++ client API for PostgreSQL: http://pqxx.org/development/libpqxx/ (CHEOPS deployment uses version 4.0.1)
 * Eigen C++ template library for linear algebra: https://eigen.tuxfamily.org/ (CHEOPS deployment uses version 3.3.4)
 
+
 The following python packages are also required:
 * numpy	1.18.1 or later
 * scipy	1.1.0 or later
 
-<h3>Installation</h3>
+<h3>Environment</h3>
 
-The environment first needs to be set up as described in [README.md](https://github.com/davefutyan/common_sw#readme). In addition, CHEOPSim requires the following environment variable to be set:
+The environment first needs to be set up as described in the
+[README.md for common_sw](https://github.com/davefutyan/common_sw#readme).
+
+In addition, CHEOPSim requires the following environment variable to be set:
 
     export CHEOPS_TESTDATA=${CHEOPS_SW}
 
-The following updates are also required for the environment:
+The following updates are also required:
 * Add include paths for GSL, pqxx and Eigen to the EXT_INC_DIRS environment variable
 * Add library paths for GSL and pqxx to the EXT_LIB_DIRS and LD_LIBRARY_PATH environment variables
 
+<h3>Installation</h3>
 CHEOPSim can now be installed as follows:
 
     cd CHEOPSim
@@ -35,7 +40,7 @@ CHEOPSim can now be installed as follows:
 
 CHEOPSim requires a set of reference files as input. A default set of reference files are provided in the tarball [reference_data.tar.gz](https://github.com/davefutyan/CHEOPSim/releases/download/v1.0/reference_data.tar.gz) provided with the release of this package.
 
-The files from this tarball need to be moved to ${CHEOPS_SW}/install
+The contents of this tarball need to be moved to ${CHEOPS_SW}/install
 
 The configuration of the simulator is defined in CHEOPSim/simulator/conf/runCHEOPSim.xml
 
