@@ -1,5 +1,6 @@
 # CHEOPSim
-Source code for the CHEOPS simulator
+Source code for the simulator of the [CHEOPS](https://cheops.unibe.ch) space telescope mission. CHEOPSim is described in the following publication:
+https://arxiv.org/abs/2001.05587
 
 <h3>Requirements</h3>
 
