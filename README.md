@@ -47,7 +47,7 @@ The configuration of the simulator is defined in CHEOPSim/simulator/conf/runCHEO
 
 The parameters of the configuration are documented in the [CHEOPSim user guide](https://github.com/davefutyan/CHEOPSim/releases/download/v1.0/CHEOPSim_UserManual.pdf) provided with the release of this package.
 
-The configuration file can be generated using the web interface provided in the [CHEOPSim_web](https://github.com/davefutyan/CHEOPSim_web) package.
+The configuration file can be edited manually, or can be generated using the web interface provided in the [CHEOPSim_web](https://github.com/davefutyan/CHEOPSim_web) package.
 
 CHEOPSim can be run as follows:
 
